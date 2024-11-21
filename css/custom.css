@@ -10,14 +10,11 @@ h3 {
   text-transform: uppercase;
   letter-spacing: .2rem;
   text-align: center;
+  margin-top: 7rem;
 }
 
 img {
   width: 100%;
-}
-
-img {
-    width: 100%;
     mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 60%, rgba(0, 0, 0, 0) 70%);
     -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 60%, rgba(0, 0, 0, 0) 70%);
     position: relative;
@@ -28,6 +25,10 @@ img {
   color: #FFF;
   background-color: #2b8faf;
   border-color: #33C3F0;
+}
+
+.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+  color: #eee;
 }
 
 .parts {
