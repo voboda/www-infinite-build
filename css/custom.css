@@ -9,17 +9,33 @@ h3 {
   font-size: 2rem;
   text-transform: uppercase;
   letter-spacing: .2rem;
+  text-align: center;
 }
 
 img {
   width: 100%;
-  opacity: 0.6;
+}
+
+img {
+    width: 100%;
+    mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 60%, rgba(0, 0, 0, 0) 70%);
+    -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 60%, rgba(0, 0, 0, 0) 70%);
+    position: relative;
+    z-index: 1;
 }
 
 .button.button-primary, button.button-primary, input[type="submit"].button-primary, input[type="reset"].button-primary, input[type="button"].button-primary {
   color: #FFF;
   background-color: #2b8faf;
   border-color: #33C3F0;
+}
+
+.parts {
+  margin-top: 7rem;
+}
+
+.center {
+  text-align: center;
 }
 
 .sine-wave {
