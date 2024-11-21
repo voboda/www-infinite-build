@@ -1,0 +1,52 @@
+body {
+  color: #afb6c0;
+  background: radial-gradient(circle at 10% 20%, #2a3b4d, transparent 60%), radial-gradient(circle at 80% 30%, #1d2b39, transparent 50%), radial-gradient(circle at 50% 70%, #1b1f21, transparent 40%), radial-gradient(circle at 30% 50%, #040e1a, transparent 70%), radial-gradient(circle at 70% 80%, #0a1126, transparent 60%);
+  background-color: #131b26;
+  padding-bottom: 10vh;
+}
+
+h3 {
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: .2rem;
+}
+
+img {
+  width: 100%;
+  opacity: 0.6;
+}
+
+.button.button-primary, button.button-primary, input[type="submit"].button-primary, input[type="reset"].button-primary, input[type="button"].button-primary {
+  color: #FFF;
+  background-color: #2b8faf;
+  border-color: #33C3F0;
+}
+
+.sine-wave {
+  position: absolute;
+  top: 0%;
+  width: 100%;
+  height: 30vh;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 1' preserveAspectRatio='none'><path fill='%23f93943' d='M 0 0 C .37 0, .63 1, 1 1 C 1.37 1, 1.63 0, 2 0 Z'/></svg>");
+  opacity: 0.4; /* Optional for visual blending */
+  background-size: 200% 100%;
+  background-repeat: repeat-x;
+  animation: wave 36s linear infinite;
+}
+
+.wave-2 {
+  background: url("data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 1" preserveAspectRatio="none"><path d="M 0 0 C .37 0, .63 1, 1 1 C 1.37 1, 1.63 0, 2 0 Z" fill="none" stroke="#7eb2dd" stroke-width="0.05"/></svg>");
+  background-size: 200% 100%;
+  opacity: 0.2; /* Optional for visual blending */
+  animation: wave 28s linear infinite;
+  animation-delay: 0s; /* Offset animation timing */
+}
+
+@keyframes wave {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -200%;
+  }
+}
