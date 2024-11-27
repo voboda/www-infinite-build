@@ -32,11 +32,28 @@ img {
 }
 
 .parts {
-  margin-top: 7rem;
+  margin-top: 9rem;
+  margin-bottom: 9rem;
 }
 
 .center {
   text-align: center;
+}
+
+.parts .row {
+    display: flex;
+    align-items: center; /* Vertically center content in the row */
+}
+
+.parts .one-half.column {
+    display: flex;
+    flex-direction: column; /* Maintains vertical layout of children */
+    justify-content: center; /* Center content vertically within this column */
+}
+
+.parts .one-half.column img {
+    max-width: 100%; /* Ensures the image scales properly */
+    height: auto; /* Maintains aspect ratio */
 }
 
 .sine-wave {
