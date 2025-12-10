@@ -65,22 +65,41 @@ img {
   opacity: 0.4; /* Optional for visual blending */
   background-size: 200% 100%;
   background-repeat: repeat-x;
-  animation: wave 36s linear infinite;
+    animation: wave 40s ease-in-out infinite, swell 13s ease-in-out infinite;
+
 }
 
 .wave-2 {
   background: url("data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 1" preserveAspectRatio="none"><path d="M 0 0 C .37 0, .63 1, 1 1 C 1.37 1, 1.63 0, 2 0 Z" fill="none" stroke="#7eb2dd" stroke-width="0.05"/></svg>");
   background-size: 200% 100%;
   opacity: 0.2; /* Optional for visual blending */
-  animation: wave 28s linear infinite;
-  animation-delay: 0s; /* Offset animation timing */
+   animation: wave 55s ease-in-out infinite, swell 19s ease-in-out infinite;
+  animation-delay: -5s, -3s; /* slight phase offset */
 }
 
 @keyframes wave {
-  from {
-    background-position-x: 0;
+  0% {
+    background-position: 0 0;
   }
-  to {
-    background-position-x: -200%;
+  20% {
+    background-position: -40% 2%;
+  }
+  50% {
+    background-position: -130% 0;
+  }
+  80% {
+    background-position: -200% -2%;
+  }
+  100% {
+    background-position: -260% 0;
+  }
+}
+
+@keyframes swell {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scaleY(1);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0) scaleY(1.06);
   }
 }
