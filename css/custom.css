@@ -71,6 +71,7 @@ img {
 
 .wave-2 {
   background: url("data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 1" preserveAspectRatio="none"><path d="M 0 0 C .37 0, .63 1, 1 1 C 1.37 1, 1.63 0, 2 0 Z" fill="none" stroke="#7eb2dd" stroke-width="0.05"/></svg>");
+
   background-size: 200% 100%;
   opacity: 0.2; /* Optional for visual blending */
    animation: wave 55s ease-in-out infinite, swell 19s ease-in-out infinite;
@@ -78,22 +79,14 @@ img {
 }
 
 @keyframes wave {
-  0% {
-    background-position: 0 0;
-  }
-  20% {
-    background-position: -40% 2%;
-  }
-  50% {
-    background-position: -130% 0;
-  }
-  80% {
-    background-position: -200% -2%;
-  }
-  100% {
-    background-position: -260% 0;
-  }
+  0%   { background-position:   0%  0; }
+  20%  { background-position: -40%  2%; }
+  50%  { background-position:-130%  0; }
+  80%  { background-position:-200% -2%; }
+  100% { background-position:-200%  0; } /* was -260% 0 */
 }
+
+
 
 @keyframes swell {
   0%, 100% {
