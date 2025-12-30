@@ -11,6 +11,7 @@ h3 {
   letter-spacing: .2rem;
   text-align: center;
   margin-top: 7rem;
+  position: relative;
 }
 
 img {
@@ -54,6 +55,26 @@ img {
 .parts .one-half.column img {
     max-width: 100%; /* Ensures the image scales properly */
     height: auto; /* Maintains aspect ratio */
+}
+
+.wip {
+  opacity: 0.7;
+}
+
+
+.wip::after{
+  content: "in-progress";
+  position: absolute;
+  top: 0%;
+  right: 50px;
+  transform: translateY(-50%) rotate(9deg);
+  transform-origin: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: #e74c3c;
+  white-space: nowrap;
+  width: 20px;
+  text-align: center;
 }
 
 .sine-wave {
