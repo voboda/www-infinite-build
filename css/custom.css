@@ -15,9 +15,10 @@ h3 {
 }
 
 img {
+  filter: hue-rotate(260deg);
   width: 100%;
-    mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 60%, rgba(0, 0, 0, 0) 70%);
-    -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 255, 0.9) 60%, rgba(0, 0, 0, 0) 70%);
+  mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 60%, rgba(0, 0, 0, 0) 70%);
+  -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 0.9) 60%, rgba(0, 0, 0, 0) 70%);
     position: relative;
     z-index: 1;
 }
@@ -42,19 +43,19 @@ img {
 }
 
 .parts .row {
-    display: flex;
-    align-items: center; /* Vertically center content in the row */
+  display: flex;
+  align-items: center; /* Vertically center content in the row */
 }
 
 .parts .one-half.column {
-    display: flex;
-    flex-direction: column; /* Maintains vertical layout of children */
-    justify-content: center; /* Center content vertically within this column */
+  display: flex;
+  flex-direction: column; /* Maintains vertical layout of children */
+  justify-content: center; /* Center content vertically within this column */
 }
 
 .parts .one-half.column img {
-    max-width: 100%; /* Ensures the image scales properly */
-    height: auto; /* Maintains aspect ratio */
+  max-width: 100%; /* Ensures the image scales properly */
+  height: auto; /* Maintains aspect ratio */
 }
 
 .wip {
