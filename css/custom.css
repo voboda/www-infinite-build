@@ -34,7 +34,6 @@ img {
 }
 
 .parts {
-  margin-top: 9rem;
   margin-bottom: 9rem;
 }
 
@@ -53,7 +52,7 @@ img {
   justify-content: center; /* Center content vertically within this column */
 }
 
-.parts .one-half.column img {
+.parts .column img {
   max-width: 100%; /* Ensures the image scales properly */
   height: auto; /* Maintains aspect ratio */
 }
@@ -79,7 +78,8 @@ img {
 }
 
 .sine-wave {
-  position: absolute;
+  position: fixed;
+  z-index: -1;
   top: 0%;
   width: 100%;
   height: 30vh;
@@ -116,5 +116,56 @@ img {
   }
   50% {
     transform: translate3d(0, -8px, 0) scaleY(1.06);
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 549px) {
+  
+  /* Reduce top margins on mobile */
+  h3 {
+    margin-top: 3rem;
+    font-size: 1.5rem;
+  }
+  
+  /* Reduce section spacing */
+  .parts {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+  
+  /* Reverse order: show images after text on mobile */
+  .parts .row {
+    display: flex;
+    flex-direction: column;
+  }
+  
+    /* Images always appear first on mobile */
+  .parts .column:has(img) {
+    order: 2;
+  }
+
+  /* Add spacing between stacked columns */
+  .parts .column {
+      display: flex;
+  flex-direction: column;
+  justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .parts .column img {
+    width: 100%;
+    max-width: 200px;
+    margin: 0px auto;
+  }
+  
+  /* Smaller wave height on mobile */
+  .sine-wave {
+    height: 20vh;
+  }
+  
+  /* Adjust header margin for mobile */
+  .header {
+    margin-top: 30% !important;
   }
 }
