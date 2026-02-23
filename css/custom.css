@@ -33,6 +33,10 @@ img {
   color: #eee;
 }
 
+.footer {
+  margin-top: 10% ;
+}
+
 .parts {
   margin-bottom: 9rem;
 }
@@ -165,7 +169,7 @@ img {
   }
   
   /* Adjust header margin for mobile */
-  .header {
+  .header .footer {
     margin-top: 30% !important;
   }
 }
