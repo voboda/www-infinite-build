@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Infinite Build</title>
+<title>The Infinite Build (windows)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Space+Grotesk:wght@400;500&amp;display=swap" rel="stylesheet">
@@ -72,16 +72,16 @@ header{position:relative;padding-top:0;margin-bottom:14vh}
   top:0;
   left:0;
   width:100vw;
-  height:clamp(150px,26vw,260px);
+  height:clamp(118px,24vw,240px);
   pointer-events:none;
-  z-index:0;
+  z-index:-1;
   transform:translateY(var(--seaY,0px));
 }
 .tide{
   position:absolute;
   inset:0;
   transform-origin:top center;
-  transform:scaleY(calc(1 + var(--chop) * 0.55));
+  transform:scaleY(calc(1 + var(--chop) * 0.3));
   transition:transform 1.4s cubic-bezier(.4,0,.2,1);
 }
 .swell{position:absolute;inset:0;will-change:transform}
@@ -242,15 +242,14 @@ a:hover{text-decoration-color:var(--mark)}
   margin:1.1rem 0;
   max-width:34em;
   transform:rotate(var(--tilt,-.6deg));
-  animation:surface .5s cubic-bezier(.2,1.2,.4,1);
 }
 .note.wavy{
-  border:2px solid var(--sea-b);
+  border:2px solid color-mix(in oklab,var(--sea-b) 45%,transparent);
   border-radius:44% 56% 47% 53% / 36% 40% 60% 64%;
   padding:1.6rem 1.7rem;
   box-shadow:none;
-  background:color-mix(in oklab,var(--sea-c) 14%,var(--note));
-  animation:surface .5s cubic-bezier(.2,1.2,.4,1),ripple 14s ease-in-out infinite 0.5s;
+  background:color-mix(in oklab,var(--sea-c) 22%,transparent);
+  animation:ripple 14s ease-in-out infinite;
 }
 @keyframes ripple{
   0%,100%{border-radius:44% 56% 47% 53% / 36% 40% 60% 64%}
@@ -259,6 +258,62 @@ a:hover{text-decoration-color:var(--mark)}
   79%{border-radius:52% 48% 36% 64% / 40% 60% 40% 60%}
 }
 .note.wavy > .note{border-radius:0}
+/* every reveal except the door and the shell floats over the page */
+.note.floating,.openers.floating{
+  position:absolute;
+  z-index:10;
+  width:min(29rem,86vw);
+  overflow:visible;
+  background:var(--note);
+  border:1px solid color-mix(in oklab,var(--ink) 26%,transparent);
+  box-shadow:0 14px 34px color-mix(in oklab,var(--ink) 34%,transparent),
+             5px 6px 0 color-mix(in oklab,var(--ink) 10%,transparent);
+  padding:1.05rem 1.2rem;
+  margin:0;
+}
+.note.floating.deep,.note.floating.deepest{
+  background:var(--note);
+  border-left:1px solid color-mix(in oklab,var(--ink) 26%,transparent);
+  width:min(25rem,82vw);
+  font-style:normal;
+  color:var(--ink);
+}
+.note.floating.deepest{
+  background:color-mix(in oklab,var(--sea-c) 18%,var(--note));
+  width:min(23rem,80vw);
+}
+.note.floating.wavy{
+  border:2px solid var(--sea-b);
+  background:color-mix(in oklab,var(--sea-c) 26%,var(--note));
+  padding:1.5rem 1.6rem;
+}
+.asked{
+  margin:0;
+  font-family:"Instrument Serif",Georgia,serif;
+  font-size:1.28rem;
+  line-height:1.15;
+}
+.answered{
+  margin:.2rem 0 .1rem;
+  font-size:.82em;
+  letter-spacing:.02em;
+  opacity:.62;
+}
+.openers.floating{background:color-mix(in oklab,var(--sea-b) 12%,var(--note))}
+.floating{cursor:grab}
+.floating.hauling{cursor:grabbing;user-select:none;box-shadow:0 26px 50px color-mix(in oklab,var(--ink) 40%,transparent)}
+.floating.hauling *{pointer-events:none}
+.floating a,.floating button{cursor:auto}
+.floating a{cursor:pointer}
+.floating[data-mark]::before{
+  content:attr(data-mark);
+  display:block;
+  text-align:center;
+  font-size:var(--mark-size,1.8rem);
+  line-height:1;
+  margin:-.1rem 0 .6rem;
+}
+.floating{border-top:7px solid var(--accent,var(--sea-b))}
 .note.deep{
   background:transparent;
   border:0;
@@ -363,9 +418,6 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 }
 
 /* --- the series egg --- */
-.egg[data-series]{transition:opacity .3s ease}
-.egg.spent{opacity:.35;cursor:default}
-.step{animation:surface .5s cubic-bezier(.2,1.2,.4,1)}
 
 /* --- the door --- */
 .doorframe{
@@ -483,8 +535,149 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   margin-top:.4rem;
 }
 @media (prefers-reduced-motion: reduce){
-  .door-panel,.opener,.step,.note.wavy{animation:none !important}
+  .door-panel,.opener,.step,.note.wavy,.floating[data-theme="waves"]{animation:none !important}
 }
+
+/* ---------- every window dressed for its own emoji ---------- */
+.floating.floating[data-theme]{border-top-width:0}
+
+/* ♾️ the chatroom that never closes */
+.floating.floating[data-theme="always"]{
+  background:#EFF3EE;color:#1D2A2E;
+  border:2px dashed #6E8F92;border-radius:999px / 84px;
+  padding:1.5rem 2rem;text-align:center;
+}
+/* 🔕 muted, and looks it */
+.floating.floating[data-theme="muted"]{
+  background:#DEE1DD;color:#5A6360;
+  border:1px solid #B4BAB5;box-shadow:0 8px 20px rgba(0,0,0,.16);
+  font-size:.88em;
+}
+/* 🧑‍💻 a terminal */
+.floating.floating[data-theme="coder"]{
+  background:#10161A;color:#9FE8B4;
+  border:1px solid #2C3A41;border-radius:6px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;line-height:1.5;
+}
+/* 🧾 a receipt */
+.floating.floating[data-theme="creed"]{
+  background:#FDFCF7;color:#2A2A28;width:min(20rem,78vw);
+  border:1px solid #DAD5C6;border-radius:0;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82em;
+  -webkit-mask:linear-gradient(#000 0 0) padding-box,
+    radial-gradient(6px at 6px 100%,transparent 98%,#000) 0 100%/12px 12px repeat-x;
+  mask:linear-gradient(#000 0 0) padding-box,
+    radial-gradient(6px at 6px 100%,transparent 98%,#000) 0 100%/12px 12px repeat-x;
+  padding-bottom:1.6rem;
+}
+/* 🐧 a conference badge */
+.floating.floating[data-theme="coin"]{
+  background:#FFFFFF;color:#16202A;
+  border:1px solid #C9CFD4;border-top:26px solid #2B4C6F;border-radius:4px;
+}
+/* 🐬 open water */
+.floating.floating[data-theme="dolphin"]{
+  background:linear-gradient(170deg,#2E7185,#123846);color:#EAF6F3;
+  border:0;border-radius:38% 42% 34% 46% / 14% 12% 16% 14%;
+  padding:1.5rem 1.6rem;
+}
+/* 🛞 round, and reinvented */
+.floating.floating[data-theme="wheel"]{
+  background:radial-gradient(circle at 50% 45%,#F6EEDC 40%,#E2CDA4 100%);
+  color:#3A2A12;border:5px solid #8A6A34;border-radius:50%;
+  width:min(22rem,80vw);aspect-ratio:1;display:flex;flex-direction:column;
+  justify-content:center;text-align:center;padding:3rem;font-size:.9em;line-height:1.4;
+}
+/* 💸 folding money */
+.floating.floating[data-theme="money"]{
+  background:#E7F0E2;color:#1F3A22;
+  border:2px solid #4E7A4E;outline:1px solid #4E7A4E;outline-offset:4px;border-radius:3px;
+}
+/* 🧮 graph paper */
+.floating.floating[data-theme="hash"]{
+  background:
+    repeating-linear-gradient(0deg,transparent 0 21px,#C9D6D0 21px 22px),
+    repeating-linear-gradient(90deg,transparent 0 21px,#C9D6D0 21px 22px),#FBFAF4;
+  color:#1C2B2B;border:1px solid #9FB3AC;border-radius:2px;
+}
+/* 📐 blueprint */
+.floating.floating[data-theme="euler"]{
+  background:
+    repeating-linear-gradient(0deg,transparent 0 15px,rgba(255,255,255,.14) 15px 16px),
+    repeating-linear-gradient(90deg,transparent 0 15px,rgba(255,255,255,.14) 15px 16px),#173A63;
+  color:#D8E8FF;border:1px solid #2E5B90;border-radius:2px;
+}
+/* 🖋️ ruled paper */
+.floating.floating[data-theme="poets"]{
+  background:repeating-linear-gradient(0deg,#FFFDF4 0 27px,#DCD3B8 27px 28px);
+  color:#2B2519;border:1px solid #CFC4A4;border-radius:2px;
+  font-family:"Instrument Serif",Georgia,serif;font-size:1.12em;font-style:italic;line-height:28px;
+}
+/* 🧰 duct tape */
+.floating.floating[data-theme="toolbelt"]{
+  background:#D8D3C6;color:#26221B;
+  border:3px solid #8C8574;border-radius:2px;
+  box-shadow:8px 9px 0 rgba(0,0,0,.22);transform:rotate(-1.4deg);
+}
+/* 📋 a clipboard */
+.floating.floating[data-theme="ddd"]{
+  background:#FCFBF6;color:#22272A;
+  border:1px solid #B9B3A2;border-top:22px solid #7C6A4E;border-radius:3px;
+}
+/* 🧪 the lab */
+.floating.floating[data-theme="prod"]{
+  background:#EAF5EC;color:#17301E;
+  border:2px dashed #4E8A63;border-radius:14px;
+}
+/* 🌍 one planet only */
+.floating.floating[data-theme="earth"]{
+  background:radial-gradient(circle at 34% 30%,#7FBFA8,#1F4A5C 78%);
+  color:#F0F7F4;border:0;border-radius:46%;
+  width:min(20rem,76vw);aspect-ratio:1;display:flex;flex-direction:column;
+  justify-content:center;text-align:center;padding:2.6rem;
+}
+/* 🎲 probably */
+.floating.floating[data-theme="dice"]{
+  background:#FFFFFF;color:#1A1A1A;
+  border:2px dotted #444;border-radius:18px;
+}
+/* 🦦 unbothered */
+.floating.floating[data-theme="otter"]{
+  background:#EFE2D0;color:#3A2A1C;
+  border:1px solid #A98868;border-radius:26px 26px 26px 6px;
+}
+/* 📜 an early draft, for two years */
+.floating.floating[data-theme="draft"]{
+  background:#F6EEDA;color:#3A2F1C;
+  border:1px solid #C9B48A;border-radius:2px 14px 2px 14px;
+  font-family:"Instrument Serif",Georgia,serif;font-size:1.1em;
+}
+/* 🌀 concentric */
+.floating.floating[data-theme="waves"]{
+  background:repeating-radial-gradient(circle at 50% 0,#DCEBEA 0 14px,#C4DEDC 14px 28px);
+  background-position:0 0;
+  color:#12333A;border:1px solid #85B2AE;border-radius:0 0 40% 40% / 0 0 18% 18%;
+  animation:spread 26s linear infinite;
+}
+@keyframes spread{to{background-position:0 28px}}
+/* 🐍 a finite field */
+.floating.floating[data-theme="snake"]{
+  background:
+    repeating-linear-gradient(0deg,transparent 0 17px,#1D3A22 17px 18px),
+    repeating-linear-gradient(90deg,transparent 0 17px,#1D3A22 17px 18px),#0E1F13;
+  color:#8FE87F;border:2px solid #2C6B34;border-radius:2px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;
+}
+/* 💬 three speech bubbles, one per question */
+.floating.floating[data-theme="tabs"],
+.floating.floating[data-theme="tinker"],
+.floating.floating[data-theme="fraud"]{
+  border:1px solid #A9BEC2;border-radius:20px 20px 20px 4px;
+  color:#16262B;
+}
+.floating.floating[data-theme="tabs"]{background:#E8F1F3}
+.floating.floating[data-theme="tinker"]{background:#F3EDE2}
+.floating.floating[data-theme="fraud"]{background:#EDE9F3}
 </style>
 </head>
 <body>
@@ -517,13 +710,13 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   <p>Screensharing is mandatory unless you have a doctor's note.</p>
   <p>The chatroom is always there when you need it.<button class="egg small" data-egg="always" aria-expanded="false" aria-controls="r-always" aria-label="Something about the chatroom">&#9854;&#65039;</button></p>
   <div class="note deep" id="r-always" hidden>
-    <p>For some reason it's also there when you don't.<button class="egg tiny" data-egg="muted" aria-expanded="false" aria-controls="r-muted" aria-label="Something about notifications">&#128277;</button><button class="egg small" data-egg="coder" data-series aria-expanded="false" aria-controls="r-coder" aria-label="Something about the people here. Keep pressing.">&#129489;&#8205;&#128187;</button></p>
+    <p>For some reason it's also there when you don't.<button class="egg tiny" data-egg="muted" aria-expanded="false" aria-controls="r-muted" aria-label="Something about notifications">&#128277;</button><button class="egg small" data-egg="coder" aria-expanded="false" aria-controls="r-coder" aria-label="Something about the people here. Keep pressing.">&#129489;&#8205;&#128187;</button></p>
     <div class="note deepest" id="r-muted" hidden>
       <p>Half of us have it muted, and a stubborn remainder are still in the old Telegram chat they weren't checking when we started the Matrix one.</p>
     </div>
     <div class="note deep" id="r-coder" hidden>
-      <p class="step" hidden>Every crypto community eventually produces someone with a manifesto and a token, quietly convinced they've solved civilization. We used to find that very funny, then we counted our own manifestos.</p>
-      <div class="step" hidden>
+      <p>Every crypto community eventually produces someone with a manifesto and a token, quietly convinced they've solved civilization. We used to find that very funny, then we counted our own manifestos.<button class="egg tiny" data-egg="creed" aria-expanded="false" aria-controls="r-creed" aria-label="Something about the tokens">&#129534;</button></p>
+      <div class="note deepest" id="r-creed" hidden>
         <p>None of them have tokens, which we consider a moral distinction and everyone else considers a technicality.<button class="egg tiny" data-egg="coin" aria-expanded="false" aria-controls="r-coin" aria-label="Something about the room">&#128039;</button></p>
         <div class="note deepest" id="r-coin" hidden>
           <p>Walk into an Ethereum dev event and you can read the room in about four seconds. Half of them run Arch, or NixOS, or never quite left CCC congress. The rest are here for the merch and free money. We are, unfortunately, extremely the first half, and serving it.</p>
@@ -607,23 +800,12 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   <div class="doorframe" id="r-door" hidden>
     <div class="door-panel">
       <p>Why do these things have application forms? Applying to meet people you're about to be friends with is a strange thing to do. We're a different kind of strange.</p>
-    <button class="egg big in-door" data-egg="wave" aria-expanded="false" aria-controls="r-wave" aria-label="Wave">&#127754;</button>
-    <div class="note wavy" id="r-wave" hidden>
-      <p>Nobody grades your answers. You'll probably feel like you're oversharing. That's the correct amount.<button class="egg small" data-egg="draft" aria-expanded="false" aria-controls="r-draft" aria-label="Something about drafts">&#128220;</button><button class="egg small" data-egg="waves" aria-expanded="false" aria-controls="r-waves" aria-label="Something about waves">&#127744;</button><button class="egg small" data-egg="snake" aria-expanded="false" aria-controls="r-snake" aria-label="Something about horizons">&#128013;</button></p>
-      <div class="note deep" id="r-draft" hidden>
-        <p>This whole thing has technically been an early draft for two years. We've decided that's just what drafts are now.</p>
-      </div>
-      <div class="note deep" id="r-waves" hidden>
-        <p>We have a theory called waves of centralisation. Decentralise, consolidate, decentralise again, historically inevitable. We have citations, but decided an animation of water was better.</p>
-      </div>
-      <div class="note deep" id="r-snake" hidden>
-        <p>Your horizon can be infinite while you're standing in a finite field. It's just true of a game of Snake, and it's true of joining something like this.</p>
-      </div>
-    </div>
       <p>Think of the answer to these questions:</p>
       <ul class="asks">
         <li>What do you keep opening tabs about?<button class="egg small" data-egg="tabs" aria-expanded="false" aria-controls="r-tabs" aria-label="See how others answered">&#128172;</button>
           <div class="openers" id="r-tabs" hidden>
+            <p class="asked">What do you keep opening tabs about?</p>
+            <p class="answered">Some people answered:</p>
             <blockquote class="opener jotted">
               <p><span>Tabs:</span> alternative social media designs, comedians and their processes, permaculture.</p>
             </blockquote>
@@ -634,6 +816,8 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
         </li>
         <li>Anything you're building, learning, or tinkering with? Links welcome.<button class="egg small" data-egg="tinker" aria-expanded="false" aria-controls="r-tinker" aria-label="See how others answered">&#128172;</button>
           <div class="openers" id="r-tinker" hidden>
+            <p class="asked">Anything you're building, learning, or tinkering with?</p>
+            <p class="answered">Some people answered:</p>
             <blockquote class="opener plain">
               <p>I'm writing a mental poker implementation, mostly for learning some more advanced cryptography.</p>
             </blockquote>
@@ -645,6 +829,8 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
         <li>Anything you've been stuck on, or powering through, right now?</li>
         <li>When do you feel most like an imposter?<button class="egg small" data-egg="fraud" aria-expanded="false" aria-controls="r-fraud" aria-label="See how others answered">&#128172;</button>
           <div class="openers" id="r-fraud" hidden>
+            <p class="asked">When do you feel most like an imposter?</p>
+            <p class="answered">Some people answered:</p>
             <blockquote class="opener shout">
               <p>I feel like I'm an imposter, when I'm around people who actually know how to code.</p>
             </blockquote>
@@ -660,6 +846,19 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
           </div>
         </li>
       </ul>
+    <button class="egg big in-door" data-egg="wave" aria-expanded="false" aria-controls="r-wave" aria-label="Wave">&#127754;</button>
+    <div class="note wavy" id="r-wave" hidden>
+      <p>Nobody grades your answers. You'll probably feel like you're oversharing. That's the correct amount.<button class="egg small" data-egg="draft" aria-expanded="false" aria-controls="r-draft" aria-label="Something about drafts">&#128220;</button><button class="egg small" data-egg="waves" aria-expanded="false" aria-controls="r-waves" aria-label="Something about waves">&#127744;</button><button class="egg small" data-egg="snake" aria-expanded="false" aria-controls="r-snake" aria-label="Something about horizons">&#128013;</button></p>
+      <div class="note deep" id="r-draft" hidden>
+        <p>This whole thing has technically been an early draft for two years. We've decided that's just what drafts are now.</p>
+      </div>
+      <div class="note deep" id="r-waves" hidden>
+        <p>We have a theory called waves of centralisation. Decentralise, consolidate, decentralise again, historically inevitable. We have citations, but thought this ripple effect would make the point better.</p>
+      </div>
+      <div class="note deep" id="r-snake" hidden>
+        <p>Your horizon can be infinite while you're standing in a finite field. (That's true of a game of snake, and it's true of most things.)</p>
+      </div>
+    </div>
       <p>No need to answer all four. Just write what comes to mind and throw it out there in <a href="https://matrix.to/#/#joining-the-infinite-build:ungleich.ch">the group chat</a>:</p>
       <p><a class="join" href="https://matrix.to/#/#joining-the-infinite-build:ungleich.ch">Join the group chat</a></p>
       <p>Nobody's sure which room is the main chat at this point, but someone will read you and say hello back.</p>
@@ -676,7 +875,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 <script>
 (function(){
   var KEY = "ib-state-v2";
-  var TOTAL = 24;
+  var TOTAL = 25;
   var root = document.documentElement;
   var state = {found:[], series:{}, shell:0, pos:{}};
 
@@ -722,6 +921,192 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     }
   }
 
+  var CALM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var IN  = "cubic-bezier(.22,.92,.26,1)";   // comes in like water finding its level
+  var OUT = "cubic-bezier(.55,.02,.62,.98)"; // draws back the same way
+
+  var zTop = 10;
+  var FLOATS = function(el){ return el.id !== "r-door" && el.id !== "r-shell"; };
+
+  var opened = [];
+  // park a window just below whatever opened it, kept on screen, never exactly on top of another
+  function placeWindow(el, btn){
+    var op = el.offsetParent || document.body;
+    var opr = op.getBoundingClientRect();
+    var br = btn.getBoundingClientRect();
+    var w = el.offsetWidth;
+    var x = Math.max(10, Math.min(br.left + 14, window.innerWidth - w - 10));
+    var y = br.bottom + 12;
+    // if another window already sits here, step this one down and across
+    for(var pass=0; pass<8; pass++){
+      var clash = opened.some(function(o){
+        if(o === el || o.hidden) return false;
+        var r = o.getBoundingClientRect();
+        return Math.abs(r.left - x) < 26 && Math.abs(r.top - y) < 26;
+      });
+      if(!clash) break;
+      x += 18; y += 16;
+    }
+    x = Math.max(10, Math.min(x, window.innerWidth - w - 10));
+    el.style.left = (x - opr.left) + "px";
+    el.style.top = (y - opr.top) + "px";
+    el.style.zIndex = String(++zTop);
+    if(opened.indexOf(el) === -1){ opened.push(el); }
+  }
+
+  // everything opens and closes by swelling to its own height
+  function swell(el, origin, btn){
+    el.hidden = false;
+    if(btn && FLOATS(el)){
+      el.classList.add("floating");
+      if(!el.__home){
+        el.__home = {parent:el.parentNode, next:el.nextSibling};
+        document.body.appendChild(el);
+      }
+      el.__owner = btn.closest(".floating") || null;
+      el.dataset.mark = (btn.textContent || "").trim();
+      el.style.setProperty("--accent", "hsl(" + Math.round(seed(btn.dataset.egg) * 360) + " 42% 44%)");
+      el.dataset.theme = btn.dataset.egg;
+      el.style.setProperty("--mark-size", (1.35 + seed(btn.dataset.egg + "size") * 1.9).toFixed(2) + "rem");
+      placeWindow(el, btn);
+      el.style.touchAction = "none";
+      if(CALM || !el.animate) return;
+      if(el.__anim){ el.__anim.cancel(); }
+      var fo = el.getBoundingClientRect(), bo = btn.getBoundingClientRect();
+      el.style.transformOrigin = (bo.left + bo.width/2 - fo.left) + "px 0px";
+      var fa = el.animate(
+        [{transform:"scale(.72) translateY(-14px)", opacity:0},
+         {transform:"none", opacity:1}],
+        {duration:420, easing:IN});
+      el.__anim = fa;
+      fa.onfinish = function(){ el.style.transformOrigin = ""; el.__anim = null; };
+      return;
+    }
+    if(CALM || !el.animate) return;
+    if(el.__anim){ el.__anim.cancel(); }
+    var cs = getComputedStyle(el);
+    var box = {mt:cs.marginTop, mb:cs.marginBottom, pt:cs.paddingTop, pb:cs.paddingBottom};
+    var h = el.scrollHeight;
+    var from = {height:"0px", marginTop:"0px", marginBottom:"0px", paddingTop:"0px", paddingBottom:"0px", opacity:0};
+    var to   = {height:h + "px", marginTop:box.mt, marginBottom:box.mb, paddingTop:box.pt, paddingBottom:box.pb, opacity:1};
+    if(origin){
+      // the door: grows out of the door you pressed
+      var o = origin.getBoundingClientRect(), t = el.getBoundingClientRect();
+      el.style.transformOrigin = (o.left + o.width/2 - t.left) + "px " + Math.max(0, o.top + o.height/2 - t.top) + "px";
+      from.transform = "scale(.28)";
+      to.transform = "scale(1)";
+    }
+    if(!origin){ el.style.overflow = "hidden"; }
+    var a = el.animate([from, to], {duration: origin ? 700 : 480, easing: IN});
+    el.__anim = a;
+    a.onfinish = function(){ el.style.overflow = ""; el.style.transformOrigin = ""; el.__anim = null; };
+  }
+
+  function goHome(el){
+    if(el.__home && el.parentNode === document.body){
+      el.__home.parent.insertBefore(el, el.__home.next);
+      el.__home = null;
+      el.classList.remove("floating");
+      el.style.left = el.style.top = el.style.zIndex = "";
+      var i = opened.indexOf(el);
+      if(i > -1){ opened.splice(i,1); }
+    }
+  }
+
+  function trigger(panel){
+    return document.querySelector('[aria-controls="' + panel.id + '"]');
+  }
+
+  // a window closes everything it opened
+  function shutChildren(el){
+    opened.slice().forEach(function(w){
+      if(w !== el && w.__owner === el && !w.hidden){
+        var t = trigger(w);
+        if(t){ shut(t, w); } else { ebb(w); }
+      }
+    });
+  }
+
+  // windows can be picked up and put down anywhere
+  var haul = null;
+  document.addEventListener("pointerdown", function(e){
+    var win = e.target.closest && e.target.closest(".floating");
+    if(!win || win.hidden) return;
+    if(e.target.closest("a, button")) return;
+    haul = {win:win, x:e.clientX, y:e.clientY, l:win.offsetLeft, t:win.offsetTop, moved:false};
+  });
+
+  document.addEventListener("pointermove", function(e){
+    if(!haul) return;
+    var dx = e.clientX - haul.x, dy = e.clientY - haul.y;
+    if(!haul.moved && Math.abs(dx) + Math.abs(dy) < 8) return;
+    if(!haul.moved){
+      haul.moved = true;
+      haul.win.classList.add("hauling");
+      haul.win.style.zIndex = String(++zTop);
+    }
+    var w = haul.win.offsetWidth;
+    var left = Math.max(70 - w, Math.min(haul.l + dx, window.innerWidth - 70));
+    haul.win.style.left = left + "px";
+    haul.win.style.top = Math.max(0, haul.t + dy) + "px";
+  });
+
+  document.addEventListener("pointerup", function(){
+    if(!haul) return;
+    haul.win.classList.remove("hauling");
+    if(haul.moved){ dragged = haul.win; setTimeout(function(){ dragged = null; }, 0); }
+    haul = null;
+  });
+  document.addEventListener("pointercancel", function(){
+    if(haul){ haul.win.classList.remove("hauling"); haul = null; }
+  });
+
+  // 3. click the window itself to put it away
+  var dragged = null;
+  document.addEventListener("click", function(e){
+    if(dragged) return;
+    var win = e.target.closest && e.target.closest(".floating");
+    if(!win || win.hidden) return;
+    if(e.target.closest("a, button")) return;                       // links and nested eggs still work
+    if(String(window.getSelection())) return;                       // mid text-selection
+    var t = trigger(win);
+    if(t){ shut(t, win); }
+  });
+
+  document.addEventListener("pointerdown", function(e){
+    var win = e.target.closest && e.target.closest(".floating");
+    if(win){ win.style.zIndex = String(++zTop); }
+  }, true);
+
+  function ebb(el, done){
+    if(el.classList.contains("floating")){
+      shutChildren(el);
+      if(CALM || !el.animate){ el.hidden = true; goHome(el); if(done) done(); return; }
+      if(el.__anim){ el.__anim.cancel(); }
+      var fa = el.animate(
+        [{transform:"none", opacity:1},
+         {transform:"scale(.8) translateY(-10px)", opacity:0}],
+        {duration:300, easing:OUT});
+      el.__anim = fa;
+      fa.onfinish = function(){ el.hidden = true; el.__anim = null; goHome(el); if(done) done(); };
+      return;
+    }
+    if(CALM || !el.animate){ el.hidden = true; if(done) done(); return; }
+    if(el.__anim){ el.__anim.cancel(); }
+    var cs = getComputedStyle(el);
+    var from = {height:el.getBoundingClientRect().height + "px", marginTop:cs.marginTop, marginBottom:cs.marginBottom, paddingTop:cs.paddingTop, paddingBottom:cs.paddingBottom, opacity:1};
+    var to   = {height:"0px", marginTop:"0px", marginBottom:"0px", paddingTop:"0px", paddingBottom:"0px", opacity:0};
+    el.style.overflow = "hidden";
+    var a = el.animate([from, to], {duration:380, easing:OUT});
+    el.__anim = a;
+    a.onfinish = function(){
+      el.hidden = true;
+      el.style.overflow = "";
+      el.__anim = null;
+      if(done) done();
+    };
+  }
+
   function drop(key){
     var i = state.found.indexOf(key);
     if(i > -1){ state.found.splice(i,1); }
@@ -730,7 +1115,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 
   // shutting a reveal shuts everything that was living inside it
   function shut(btn, panel){
-    panel.hidden = true;
+    ebb(panel);
     btn.setAttribute("aria-expanded","false");
     btn.classList.remove("spent");
     btn.classList.remove("grown");
@@ -783,8 +1168,11 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       }
       var at = restoring ? was : was + 1;
       if(at === 0) return;
-      panel.hidden = false;
-      for(var i=0;i<steps.length;i++){ steps[i].hidden = i >= at; }
+      if(panel.hidden){ panel.hidden = false; }
+      for(var i=0;i<steps.length;i++){
+        if(i < at && steps[i].hidden){ swell(steps[i]); }
+        else if(i >= at){ steps[i].hidden = true; }
+      }
       state.series[key] = at;
       btn.classList.add("grown");
       btn.setAttribute("aria-expanded","true");
@@ -800,8 +1188,9 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       if(!restoring) shut(btn, panel);
       return;
     }
-    panel.hidden = false;
     panel.style.setProperty("--tilt", ((seed(key) - 0.5) * 2.4).toFixed(2) + "deg");
+    if(restoring){ panel.hidden = false; }
+    else { swell(panel, key === "door" ? btn : null, btn); }
     btn.setAttribute("aria-expanded","true");
     count(key);
     if(!restoring) jostle(btn);
