@@ -1,122 +1,949 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Infinite Build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Space+Grotesk:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#DCE2D6;
+  --note:#FAF7EE;
+  --ink:#13212F;
+  --ink-soft:#4A5A63;
+  --sea-a:#2B5F6E;
+  --sea-b:#3E8794;
+  --sea-c:#8FC0B7;
+  --mark:#C08A2E;
+  --mess:0;
+  --chop:0;
+  --amp:6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0D1820;
+    --note:#17252E;
+    --ink:#D9E4DC;
+    --ink-soft:#8CA0A4;
+    --sea-a:#12333D;
+    --sea-b:#1D4F5B;
+    --sea-c:#2E6E71;
+    --mark:#D6A64A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0D1820;
+  --note:#17252E;
+  --ink:#D9E4DC;
+  --ink-soft:#8CA0A4;
+  --sea-a:#12333D;
+  --sea-b:#1D4F5B;
+  --sea-c:#2E6E71;
+  --mark:#D6A64A;
+}
 
-  <!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta charset="utf-8">
-  <title>Infinite Build</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:clamp(17px,1rem + 0.35vw,20px);
+  line-height:1.55;
+  overflow-x:hidden;
+}
+.wrap{
+  width:min(46rem,100% - 2.2rem);
+  margin-inline:auto;
+  padding-bottom:22vh;
+  position:relative;
+  z-index:1;
+}
+p{max-width:36em}
 
-  <!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+/* ---------- the sea ---------- */
+header{position:relative;padding-top:0;margin-bottom:14vh}
+.sea{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:clamp(150px,26vw,260px);
+  pointer-events:none;
+  z-index:0;
+  transform:translateY(var(--seaY,0px));
+}
+.tide{
+  position:absolute;
+  inset:0;
+  transform-origin:top center;
+  transform:scaleY(calc(1 + var(--chop) * 0.55));
+  transition:transform 1.4s cubic-bezier(.4,0,.2,1);
+}
+.swell{position:absolute;inset:0;will-change:transform}
+.swell svg{position:absolute;top:0;left:0;width:200%;height:100%;display:block;fill:currentColor}
+/* the water keeps going above the fold, so heaving can never expose the fill's top edge */
+.swell::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:70vh;background:currentColor}
+.swell.s1{color:var(--sea-c);opacity:.55;animation:heave 7.3s ease-in-out infinite}
+.swell.s2{color:var(--sea-b);opacity:.6;animation:heave 11.1s ease-in-out infinite reverse}
+.swell.s3{color:var(--sea-a);opacity:.72;animation:heave 5.2s ease-in-out infinite}
+.swell.s1 svg{animation:drift 47s linear infinite}
+.swell.s2 svg{animation:drift 31s linear infinite}
+.swell.s3 svg{animation:drift 23s linear infinite reverse}
+@keyframes drift{to{transform:translateX(-50%)}}
+@keyframes heave{
+  0%   {transform:translateY(calc(var(--amp) * 0.4px)) scaleY(1)}
+  38%  {transform:translateY(calc(var(--amp) * -1px)) scaleY(1.06)}
+  61%  {transform:translateY(calc(var(--amp) * -0.2px)) scaleY(.99)}
+  100% {transform:translateY(calc(var(--amp) * 0.4px)) scaleY(1)}
+}
 
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+h1{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-weight:400;
+  font-size:clamp(3.6rem,15vw,8.5rem);
+  line-height:.84;
+  letter-spacing:-.02em;
+  margin:0;
+  padding-top:clamp(88px,17vw,168px);
+  position:relative;
+  z-index:1;
+}
+h1 em{font-style:italic;display:block}
+.standfirst{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-size:clamp(1.35rem,3.4vw,1.9rem);
+  line-height:1.25;
+  max-width:22em;
+  margin:1.6rem 0 0;
+  color:var(--ink);
+}
+.standfirst span{display:block;margin-top:.7rem}
+.prize{
+  display:inline-block;
+  font-weight:400;
+  font-size:clamp(2.1rem,7.6vw,3.1rem);
+  line-height:1;
+  letter-spacing:-.015em;
+  -webkit-text-stroke:.7px currentColor;
+  transform:rotate(-3.2deg);
+  transform-origin:0 80%;
+  margin:.5rem .3rem .2rem 0;
+}
+.pod{display:inline;line-height:1}
+.pod button{
+  appearance:none;background:none;border:0;padding:0;margin:0 .04em;
+  font:inherit;font-size:.85em;line-height:1;color:inherit;cursor:pointer;
+  display:inline-block;
+  transform-origin:50% 50%;
+  animation:arrive .5s cubic-bezier(.2,1.4,.4,1);
+}
+.pod button:focus-visible{outline:3px solid var(--mark);outline-offset:4px;border-radius:6px}
+.pod button:hover{transform:scaleX(-1)}
+.pod button.flip{animation:tumble .55s cubic-bezier(.5,0,.5,1)}
+@keyframes arrive{from{transform:translateY(-14px) scale(.5) rotate(-25deg);opacity:0}}
+@keyframes tumble{
+  0%{transform:scaleX(1)}
+  50%{transform:scaleX(-1) translateY(-10px) rotate(8deg)}
+  100%{transform:scaleX(-1)}
+}
 
-  <!-- CSS
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/skeleton.css">
-  <link rel="stylesheet" href="css/custom.css">
+/* ---------- sections ---------- */
+section{
+  margin:0 0 16vh;
+  --dir:1;
 
-  <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/webp" href="images/favicon.png">
+}
+section:nth-child(2n){--dir:-1}
+section:nth-child(5n){--dir:-1.7}
+section:nth-child(3n){--dir:.6}
+h2{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-weight:400;
+  font-size:clamp(2rem,6vw,3.2rem);
+  line-height:1;
+  margin:0 0 1.1rem;
+  letter-spacing:calc(var(--mess) * -0.004em);
+}
+a{color:var(--ink);text-decoration-thickness:1px;text-underline-offset:.22em;text-decoration-color:var(--sea-b)}
+a:hover{text-decoration-color:var(--mark)}
+.rhythm{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-size:clamp(1.5rem,4.4vw,2.1rem);
+  line-height:1.2;
+  margin:0 0 .6rem;
+}
+.plain{color:var(--ink-soft)}
 
-  <meta name="description" content="Stop grinding, start evolving.">
-  <meta property="og:title" content="Infinite Build">
-  <meta property="og:description" content="Stop grinding, start evolving.">
-  <meta property="og:url" content="https://infinite.build/">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://immutalists.infinite.build/images/compass.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Infinite Build">
-  <meta name="twitter:description" content="Stop grinding, start evolving.">
-  <meta name="twitter:image" content="https://infinite.build/images/compass.png">
+/* ---------- eggs ---------- */
+.egg{
+  appearance:none;
+  background:none;
+  border:0;
+  padding:0;
+  margin:0;
+  cursor:grab;
+  line-height:1;
+  color:inherit;
+  font:inherit;
+  position:relative;
+  touch-action:none;
+  transform:translate(var(--dx,0px),var(--dy,0px)) rotate(var(--rot,0deg));
+  transition:filter .25s ease;
+}
+.egg:focus-visible{outline:3px solid var(--mark);outline-offset:6px;border-radius:8px}
+.egg.big{
+  font-size:clamp(4.5rem,17vw,9rem);
+  display:block;
+  animation:jiggle 9s ease-in-out infinite;
+}
+.egg.big.adrift{margin-left:min(38vw,340px)}
+.egg.big.spill{margin-left:-14vw}
+.egg.big.in-door{
+  font-size:clamp(3.4rem,13vw,5.4rem);
+  margin:clamp(1.6rem,5vw,2.8rem) 0 .4rem clamp(0px,6vw,4rem);
+}
+.egg.small{font-size:1.55em;vertical-align:-.15em;margin-left:.15em}
+.egg.tiny{font-size:1.15em;vertical-align:-.08em;margin-left:.2em;opacity:.85}
+.egg.grown{font-size:2.7em;vertical-align:-.22em;transition:font-size .4s cubic-bezier(.3,1.4,.4,1)}
+.egg.dragging{cursor:grabbing;z-index:9;transition:none}
+.egg::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:-6%;
+  width:96%;
+  height:26%;
+  transform:translateX(-50%) scale(.4);
+  background:radial-gradient(ellipse at center,var(--sea-b) 0%,transparent 68%);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease,transform .3s ease;
+  filter:blur(3px);
+}
+.egg.dragging::after{opacity:.5;transform:translateX(-50%) scale(1.15)}
+.egg[aria-expanded="true"]{animation:none}
+@keyframes jiggle{
+  0%,88%,100%{transform:translate(var(--dx,0px),var(--dy,0px)) rotate(var(--rot,0deg))}
+  92%{transform:translate(var(--dx,0px),calc(var(--dy,0px) - 2px)) rotate(calc(var(--rot,0deg) + 1.4deg))}
+  96%{transform:translate(var(--dx,0px),var(--dy,0px)) rotate(calc(var(--rot,0deg) - 1deg))}
+}
 
+/* ---------- revealed notes ---------- */
+.note{
+  background:var(--note);
+  border:1px solid color-mix(in oklab,var(--ink) 18%,transparent);
+  box-shadow:4px 5px 0 color-mix(in oklab,var(--ink) 12%,transparent);
+  padding:1.15rem 1.3rem;
+  margin:1.1rem 0;
+  max-width:34em;
+  transform:rotate(var(--tilt,-.6deg));
+  animation:surface .5s cubic-bezier(.2,1.2,.4,1);
+}
+.note.wavy{
+  border:2px solid var(--sea-b);
+  border-radius:44% 56% 47% 53% / 36% 40% 60% 64%;
+  padding:1.6rem 1.7rem;
+  box-shadow:none;
+  background:color-mix(in oklab,var(--sea-c) 14%,var(--note));
+  animation:surface .5s cubic-bezier(.2,1.2,.4,1),ripple 14s ease-in-out infinite 0.5s;
+}
+@keyframes ripple{
+  0%,100%{border-radius:44% 56% 47% 53% / 36% 40% 60% 64%}
+  27%{border-radius:56% 44% 58% 42% / 48% 32% 68% 52%}
+  53%{border-radius:38% 62% 42% 58% / 56% 52% 48% 44%}
+  79%{border-radius:52% 48% 36% 64% / 40% 60% 40% 60%}
+}
+.note.wavy > .note{border-radius:0}
+.note.deep{
+  background:transparent;
+  border:0;
+  border-left:2px solid var(--sea-b);
+  box-shadow:none;
+  padding:.1rem 0 .1rem 1rem;
+  font-size:.94em;
+  color:var(--ink-soft);
+}
+.note.deepest{
+  border-left-style:dotted;
+  border-left-color:var(--mark);
+  font-style:italic;
+  font-size:.92em;
+}
+.note p{margin:0 0 .7rem}
+.note p:last-child{margin-bottom:0}
+@keyframes surface{
+  from{opacity:0;transform:translateY(10px) rotate(0deg) scale(.98)}
+}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
+.threshold{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-end;
+  gap:clamp(1.2rem,4vw,2.8rem);
+  margin:2.8rem 0 0 clamp(0px,4vw,3rem);
+}
+.threshold-aside{flex:1 1 13rem;max-width:19em;padding-bottom:clamp(.5rem,3vw,1.6rem)}
+.threshold-aside p{margin:0 0 .5rem;color:var(--ink-soft)}
+.doorway{
+  --door-in:#FAF7EE;
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  width:min(290px,74vw);
+  aspect-ratio:5/7;
+  margin:0;
+  padding:0 1.4rem 2.2rem;
+  border-radius:50% 50% 5px 5px / 40% 40% 4px 4px;
+  background:var(--mark);
+  color:#13212F;
+  border:0;
+  font-family:inherit;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:7px 8px 0 color-mix(in oklab,var(--ink) 22%,transparent);
+  transform:rotate(-2.2deg);
+  animation:bob 6.4s ease-in-out infinite;
+  overflow:hidden;
+  isolation:isolate;
+}
+.jamb{
+  position:absolute;
+  left:8%;
+  right:8%;
+  bottom:0;
+  top:7%;
+  border-radius:50% 50% 0 0 / 42% 42% 0 0;
+  background:var(--door-in);
+  transform-origin:bottom center;
+  transform:scale(.001);
+  transition:transform 420ms cubic-bezier(.3,1.2,.4,1);
+  z-index:-1;
+}
+.doorway-text{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-size:clamp(1.7rem,5.4vw,2.2rem);
+  line-height:1.05;
+  text-align:center;
+  transition:transform 420ms cubic-bezier(.3,1.2,.4,1);
+}
+.doorway:hover .jamb,.doorway:focus-visible .jamb{transform:scale(1)}
+.doorway:hover .doorway-text,.doorway:focus-visible .doorway-text{transform:translateY(-6px)}
+.doorway:active{transform:rotate(-1deg) scale(.97)}
+.doorway:focus-visible{outline:4px solid var(--ink);outline-offset:8px}
+@keyframes bob{
+  0%,100%{transform:rotate(-2.2deg) translateY(0)}
+  44%{transform:rotate(-1.1deg) translateY(-7px)}
+  72%{transform:rotate(-2.7deg) translateY(2px)}
+}
+.roll{line-height:1.9}
+footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
+
+@media (prefers-reduced-motion: reduce){
+  .swell,.swell svg,.egg.big,.pod button,.threshold{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-end;
+  gap:clamp(1.2rem,4vw,2.8rem);
+  margin:2.8rem 0 0 clamp(0px,4vw,3rem);
+}
+.threshold-aside{flex:1 1 13rem;max-width:19em;padding-bottom:clamp(.5rem,3vw,1.6rem)}
+.threshold-aside p{margin:0 0 .5rem;color:var(--ink-soft)}
+.doorway{animation:none !important}
+  .note{animation:none}
+  .egg::after{display:none}
+  section{transition:none}
+  .tide{transition:none}
+}
+
+/* --- the series egg --- */
+.egg[data-series]{transition:opacity .3s ease}
+.egg.spent{opacity:.35;cursor:default}
+.step{animation:surface .5s cubic-bezier(.2,1.2,.4,1)}
+
+/* --- the door --- */
+.doorframe{
+  margin:2.2rem calc(50% - 50vw) 0;
+  padding-inline:clamp(1.1rem,5vw,2.5rem);
+  display:grid;
+  gap:clamp(1.4rem,4vw,2.6rem);
+  justify-content:center;
+  align-items:start;
+  grid-template-columns:minmax(0,38rem);
+}
+.door-panel{
+  background:var(--note);
+  border:3px solid var(--mark);
+  border-radius:48% 48% 10px 10px / 15% 15% 6px 6px;
+  padding:clamp(3.4rem,10vw,5rem) clamp(1.5rem,5vw,2.4rem) clamp(1.8rem,4vw,2.4rem);
+  box-shadow:9px 11px 0 color-mix(in oklab,var(--ink) 16%,transparent);
+  animation:swing .68s cubic-bezier(.2,.9,.3,1);
+  transform-origin:left center;
+}
+@keyframes swing{
+  from{opacity:0;transform:perspective(1100px) rotateY(-72deg)}
+  to{opacity:1;transform:perspective(1100px) rotateY(0)}
+}
+.door-panel p{margin:0 0 1rem;max-width:none}
+.door-panel p:last-child{margin-bottom:0}
+.asks{
+  list-style:none;
+  margin:0 0 1.2rem;
+  padding:0;
+  font-family:"Instrument Serif",Georgia,serif;
+  font-size:clamp(1.2rem,3.6vw,1.5rem);
+  line-height:1.3;
+}
+.asks li{margin:0 0 .55rem;padding-left:1.1rem;text-indent:-1.1rem}
+.asks li::before{content:"\2022  ";color:var(--mark)}
+.join{
+  display:inline-block;
+  background:var(--sea-a);
+  color:#FAF7EE;
+  font-family:"Instrument Serif",Georgia,serif;
+  font-size:clamp(1.35rem,4.4vw,1.7rem);
+  line-height:1;
+  padding:.7rem 1.3rem .8rem;
+  text-decoration:none;
+  border:2px solid var(--sea-a);
+  box-shadow:5px 6px 0 color-mix(in oklab,var(--ink) 25%,transparent);
+  transform:rotate(-1.3deg);
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.join:hover{
+  transform:rotate(-1.3deg) translate(-2px,-2px);
+  box-shadow:7px 8px 0 color-mix(in oklab,var(--ink) 30%,transparent);
+}
+.join:active{transform:rotate(-1.3deg) translate(3px,4px);box-shadow:2px 2px 0 color-mix(in oklab,var(--ink) 25%,transparent)}
+.join:focus-visible{outline:3px solid var(--mark);outline-offset:5px}
+.door-when{
+  border-top:1px dashed color-mix(in oklab,var(--ink) 30%,transparent);
+  padding-top:1rem;
+  color:var(--ink-soft);
+  font-size:.94em;
+}
+.openers{
+  display:grid;
+  gap:.85rem;
+  margin:.7rem 0 1.2rem;
+  text-indent:0;
+  font-family:"Space Grotesk",system-ui,sans-serif;
+}
+.opener{
+  margin:0;
+  padding:.85rem 1.05rem;
+  border:1px solid color-mix(in oklab,var(--ink) 16%,transparent);
+  box-shadow:4px 5px 0 color-mix(in oklab,var(--ink) 10%,transparent);
+  background:var(--note);
+  animation:arrive .6s cubic-bezier(.2,1.3,.4,1) both;
+}
+.opener p{margin:0;max-width:none}
+.opener:nth-child(odd){transform:rotate(-1.2deg)}
+.opener:nth-child(even){transform:rotate(.9deg) translateX(3%)}
+
+/* one voice per card, and no two cards the same colour */
+.opener.plain{
+  background:color-mix(in oklab,var(--sea-c) 26%,var(--note));
+  font-size:.94em;
+}
+.opener.shout{
+  background:color-mix(in oklab,var(--mark) 30%,var(--note));
+}
+.opener.shout p{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-size:clamp(1.3rem,4.2vw,1.65rem);
+  line-height:1.14;
+}
+.opener.jotted{
+  background:color-mix(in oklab,var(--sea-b) 22%,var(--note));
+  font-size:.9em;
+  line-height:1.45;
+}
+.opener.jotted span{color:var(--mark)}
+.opener.jotted p + p{margin-top:.3rem}
+.opener.sprawl{
+  background:color-mix(in oklab,var(--sea-a) 15%,var(--note));
+  font-size:.92em;
+  line-height:1.5;
+}
+.opener.sprawl p{padding-left:1rem;text-indent:-1rem}
+.opener.sprawl p::before{content:"\201C";color:var(--mark)}
+.opener.sprawl + .opener.sprawl{background:color-mix(in oklab,var(--mark) 14%,var(--note))}
+
+.category{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-size:1.3rem;
+  color:var(--ink);
+  margin-top:.4rem;
+}
+@media (prefers-reduced-motion: reduce){
+  .door-panel,.opener,.step,.note.wavy{animation:none !important}
+}
+</style>
 </head>
 <body>
+<div class="wrap">
 
-  <div class="sine-wave wave-1"></div>
-  <div class="sine-wave wave-2"></div>
-  <div class="container">
-    <section class="header" style="margin-top: 25%">
-      <h1 class="title" >The Infinite Build </h1>
-    </section>
-
-    <div class="parts">
-    <div class="row">
-      <div class="">
-        <h4>The Infinite Build is an interdimensional builder club. </h4>
-        <h4>For now, you can think of it like an online hackathon, but without judges, sponsors, deadlines, or pitches. </h3>
-        <h4>And the prize is... more hacking. 🐬</h4>
-      </div>
-    </div>
-    </div>
-
-    <div class="parts">
-      <div class="row">
-        <div class="one-half column">
-          <img src="images/vectors.webp">
-        </div>
-        <div class="one-half column">
-          <h3>How It Works </h3>
-          <p>Every week, there's a meet up to screenshare our live dev environments.  We share what we're stuck on or what we're having fun with or what we figured out. It's a fun way to learn new stuff, and keep momentum going. It breaks up the isolated stretches and gives us a place to talk about stuff nobody else really gets.
-
-          <p>The chatroom's always there to ask for help (or just a friendly ear) <a href="https://blog.voboda.com/contributor-churn/">when you need it</a>.</p>
-        </div>
-      </div>
-
-      <div class="row ">
-        <div class="one-half column">
-          <h3>What's with the dolphins?</h3>
-          <p>Humans think they're so smart because they made things like the wheel, New York, wars, and venture capital. Dolphins, on the other hand, just play in the water, and consider themselves <a href="https://hitchhikers.fandom.com/wiki/Dolphins">smarter</a> for exactly that reason.
-
-          <p>We're in the system. We see the extraction. The dolphins showed us we can <a href="https://sive.rs/book/FiniteInfinite">play differently.</a>.
-
-        </div>
-        <div class="one-half column">
-          <img src="images/dolphin.png">
-        </div>
-      </div>
-
-      <div class="row ">
-        <div class="one-half column">
-          <img src="images/continuum.webp">
-        </div>
-        <div class="one-half column">
-          <h3>Building our own environment</h3>
-          <p>We're also building the tools for The Infinite Build together, to make it <a href="https://blog.voboda.com/node-connector-perspective/">anti-capture</a> down to its fibres.</p> 
-          <p>We're working on cryptographic systems that give each builder control of their own experience. Unix-like, composable, mostly harmless.  A toolbelt that let's you conjure peer-support spaces around your needs. Interdimensional divergence and convergence, at your fingertips.
-        </div>
-      </div>
-
-    <div class="row ">
-      <div class="column one-half">
-          <h3>Come play</h3>
-          <p>No application. No evaluators. Just answer a few questions from the heart to open yourself to help. 
-          <p>You'll sign and submit them using familiar tools in a new way. (An invitation to <a href="https://blog.voboda.com/playing-with-cryptography/">recognising new possibilities</a>.) Your answers get shared with others joining at the same time, so we all know how we can help each other.
-        </div>
-        <div class="column one-half">
-          <img src="images/waves.png">
-        </div>
-      </div>
-    </div>
-
-    <div class="footer row center">
-          <p> <a class="button button-primary" href="https://welcome.infinite.build">Step through and say hello.</a>
-          <p> If you're stuck, <a  href="https://matrix.to/#/#joining-the-infinite-build:ungleich.ch">ask for help here.</a>. 
-          <br/>(This isn't a test, it's an invitation to learn something with us!) </p>
-    </div>
-
+<header>
+  <div class="sea" aria-hidden="true">
+   <div class="tide">
+    <div class="swell s1"><svg viewBox="0 0 2880 120" preserveAspectRatio="none"><path d="M0,64 C120,20 240,20 360,64 C480,108 600,108 720,64 C840,20 960,20 1080,64 C1200,108 1320,108 1440,64 C1560,20 1680,20 1800,64 C1920,108 2040,108 2160,64 C2280,20 2400,20 2520,64 C2640,108 2760,108 2880,64 L2880,0 L0,0 Z"/></svg></div>
+    <div class="swell s2"><svg viewBox="0 0 2880 120" preserveAspectRatio="none"><path d="M0,52 C240,98 480,6 720,52 C960,98 1200,6 1440,52 C1680,98 1920,6 2160,52 C2400,98 2640,6 2880,52 L2880,0 L0,0 Z"/></svg></div>
+    <div class="swell s3"><svg viewBox="0 0 2880 120" preserveAspectRatio="none"><path d="M0,38 C60,66 180,66 240,38 C300,10 420,10 480,38 C540,66 660,66 720,38 C780,10 900,10 960,38 C1020,66 1140,66 1200,38 C1260,10 1380,10 1440,38 C1500,66 1620,66 1680,38 C1740,10 1860,10 1920,38 C1980,66 2100,66 2160,38 C2220,10 2340,10 2400,38 C2460,66 2580,66 2640,38 C2700,10 2820,10 2880,38 L2880,0 L0,0 Z"/></svg></div>
+   </div>
   </div>
+
+  <h1>The<br>Infinite<em>Build</em></h1>
+
+  <p class="standfirst">
+    An interdimensional builder club.
+    <span>Think of it as an online hackathon without judges, sponsors, deadlines or pitches.</span>
+    <span><b class="prize">And the prize is more hacking.</b> <span class="pod" data-pod></span></span>
+  </p>
+</header>
+
+<main>
+
+<section>
+  <h2>How it works</h2>
+  <p class="rhythm">Transit Tuesday.</p>
+  <p>Everyone screenshares whatever they're actually working on. Your live environment, mid-thought. At least one person is contractually required to say "this was working this morning."</p>
+  <p>Screensharing is mandatory unless you have a doctor's note.</p>
+  <p>The chatroom is always there when you need it.<button class="egg small" data-egg="always" aria-expanded="false" aria-controls="r-always" aria-label="Something about the chatroom">&#9854;&#65039;</button></p>
+  <div class="note deep" id="r-always" hidden>
+    <p>For some reason it's also there when you don't.<button class="egg tiny" data-egg="muted" aria-expanded="false" aria-controls="r-muted" aria-label="Something about notifications">&#128277;</button><button class="egg small" data-egg="coder" data-series aria-expanded="false" aria-controls="r-coder" aria-label="Something about the people here. Keep pressing.">&#129489;&#8205;&#128187;</button></p>
+    <div class="note deepest" id="r-muted" hidden>
+      <p>Half of us have it muted, and a stubborn remainder are still in the old Telegram chat they weren't checking when we started the Matrix one.</p>
+    </div>
+    <div class="note deep" id="r-coder" hidden>
+      <p class="step" hidden>Every crypto community eventually produces someone with a manifesto and a token, quietly convinced they've solved civilization. We used to find that very funny, then we counted our own manifestos.</p>
+      <div class="step" hidden>
+        <p>None of them have tokens, which we consider a moral distinction and everyone else considers a technicality.<button class="egg tiny" data-egg="coin" aria-expanded="false" aria-controls="r-coin" aria-label="Something about the room">&#128039;</button></p>
+        <div class="note deepest" id="r-coin" hidden>
+          <p>Walk into an Ethereum dev event and you can read the room in about four seconds. Half of them run Arch, or NixOS, or never quite left CCC congress. The rest are here for the merch and free money. We are, unfortunately, extremely the first half, and serving it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <button class="egg big adrift" data-egg="dolphin" aria-expanded="false" aria-controls="r-dolphin" aria-label="Dolphin">&#128044;</button>
+  <div class="note" id="r-dolphin" hidden>
+    <p>Humans built the wheel<button class="egg small" data-egg="wheel" aria-expanded="false" aria-controls="r-wheel" aria-label="Something about the wheel">&#128734;</button>, New York, wars, and venture capital<button class="egg small" data-egg="money" aria-expanded="false" aria-controls="r-money" aria-label="Something about venture capital">&#128184;</button>. We are very proud of this.</p>
+    <div class="note deep" id="r-wheel" hidden>
+      <p>Most of what we build here is a wheel someone else already invented. We build it again anyway, partly so nobody else can repossess it, and partly because reading someone else's code is worse than writing your own, badly.</p>
+    </div>
+    <div class="note deep" id="r-money" hidden>
+      <p>No investors, answering to each other instead, which is principled except when your friends aren't free on a Tuesday to be answered to.</p>
+    </div>
+    <p>Dolphins built none of it. They just swim around and occasionally rescue a drowning sailor.</p>
+    <p>We used to think that was because they hadn't figured out capitalism yet. Increasingly we think they figured it out first.<button class="egg small" data-egg="hash" aria-expanded="false" aria-controls="r-hash" aria-label="Something about guessing">&#129518;</button></p>
+    <div class="note deep" id="r-hash" hidden>
+      <p>Guessing what we're building next is basically brute-forcing a hash: technically possible and comically slow.</p>
+      <p>We used to explain hash functions with long division and call mathematics the language of the universe. We still stand by the long division.<button class="egg tiny" data-egg="euler" aria-expanded="false" aria-controls="r-euler" aria-label="Something about fairness">&#128208;</button><button class="egg tiny" data-egg="poets" aria-expanded="false" aria-controls="r-poets" aria-label="Something about cryptographers">&#128395;&#65039;</button></p>
+      <div class="note deepest" id="r-euler" hidden>
+        <p>We have, at various points, used Euler's identity, e<sup>i&#960;</sup> + 1 = 0, to explain Truth, Value, Fairness and Debt.</p>
+      </div>
+      <div class="note deepest" id="r-poets" hidden>
+        <p>The library is open. We used to call cryptographers throughout history poets, and infinite players redrawing the boundaries of conflict, communication and secrecy. Someone in this group wrote that sentence sincerely. We know who. We're not saying.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Building our own environment</h2>
+  <p>We're building the tools for this too, anti-capture down to the fibres. Cryptographic systems that give each builder control of their own experience. Unix-like, composable, mostly harmless.</p>
+  <button class="egg big spill" data-egg="toolbelt" aria-expanded="false" aria-controls="r-toolbelt" aria-label="Toolbelt">&#129520;</button>
+  <div class="note" id="r-toolbelt" hidden>
+    <p>We say "composable" and "anti-capture" like we've got it all figured out. We don't. Half this toolbelt is duct tape held together by good intentions. It works anyway.<button class="egg small" data-egg="ddd" aria-expanded="false" aria-controls="r-ddd" aria-label="Something about process">&#128203;</button></p>
+    <div class="note deep" id="r-ddd" hidden>
+      <p>There used to be an official system for this. Directions, Discoveries, Difficulties. Bi-weekly for full-time projects, monthly for part-time ones. It had a name and everything. Nobody follows it. We just tell each other what's going on.<button class="egg tiny" data-egg="prod" aria-expanded="false" aria-controls="r-prod" aria-label="Something about testing">&#129514;</button></p>
+      <div class="note deepest" id="r-prod" hidden>
+        <p>We still try to dignify the phrase "testing in production."</p>
+        <p class="roll">Quantum photons are observed.<button class="egg tiny" data-egg="dice" aria-expanded="false" aria-controls="r-dice" aria-label="Something about photons">&#127922;</button><br>
+        Nassim Taleb gets a mention.<button class="egg tiny" data-egg="otter" aria-expanded="false" aria-controls="r-otter" aria-label="Something about Taleb">&#129446;</button><br>
+        Chomsky is involved.<button class="egg tiny" data-egg="earth" aria-expanded="false" aria-controls="r-earth" aria-label="Something about Chomsky">&#127757;</button></p>
+        <div class="note deepest" id="r-earth" hidden>
+          <p>Chomsky's point is that you can't run a controlled experiment on a country, since there's no second, identical Earth to test against. Sadly, everything we try has to be a patch on this one.</p>
+        </div>
+        <div class="note deepest" id="r-dice" hidden>
+          <p>Quantum outcomes are only predictable probabilistically. You might think that's a metaphor for a roadmap. It isn't. It's that roadmaps are all quantum in nature.</p>
+        </div>
+        <div class="note deepest" id="r-otter" hidden>
+          <p>Taleb's point is that people trust predictive models far more than the models deserve. We read that, and nod seriously.</p>
+        </div>
+        <p>"Test in prod" really means the code is broken but we're sick of it so we're shipping it anyway.</p>
+      </div>
+    </div>
+  </div>
+  <button class="egg big" data-egg="shell" data-decoy aria-expanded="false" aria-controls="r-shell" aria-label="Shell">&#128026;</button>
+  <div class="note deep" id="r-shell" hidden aria-live="polite">
+    <p></p>
+  </div>
+</section>
+
+<section>
+  <h2>Come play</h2>
+  <p>No application. No evaluators. Four questions from the heart.</p>
+  <div class="threshold">
+    <button class="doorway" type="button" data-egg="door" aria-expanded="false" aria-controls="r-door">
+      <span class="jamb" aria-hidden="true"></span>
+      <span class="doorway-text">Step through<br>and say hello</span>
+    </button>
+    <div class="threshold-aside">
+      <p>This isn't a test. It's an invitation to learn something with us.</p>
+      <p class="category">Category is: come as you are.</p>
+    </div>
+  </div>
+
+  <div class="doorframe" id="r-door" hidden>
+    <div class="door-panel">
+      <p>Why do these things have application forms? Applying to meet people you're about to be friends with is a strange thing to do. We're a different kind of strange.</p>
+    <button class="egg big in-door" data-egg="wave" aria-expanded="false" aria-controls="r-wave" aria-label="Wave">&#127754;</button>
+    <div class="note wavy" id="r-wave" hidden>
+      <p>Nobody grades your answers. You'll probably feel like you're oversharing. That's the correct amount.<button class="egg small" data-egg="draft" aria-expanded="false" aria-controls="r-draft" aria-label="Something about drafts">&#128220;</button><button class="egg small" data-egg="waves" aria-expanded="false" aria-controls="r-waves" aria-label="Something about waves">&#127744;</button><button class="egg small" data-egg="snake" aria-expanded="false" aria-controls="r-snake" aria-label="Something about horizons">&#128013;</button></p>
+      <div class="note deep" id="r-draft" hidden>
+        <p>This whole thing has technically been an early draft for two years. We've decided that's just what drafts are now.</p>
+      </div>
+      <div class="note deep" id="r-waves" hidden>
+        <p>We have a theory called waves of centralisation. Decentralise, consolidate, decentralise again, historically inevitable. We have citations, but decided an animation of water was better.</p>
+      </div>
+      <div class="note deep" id="r-snake" hidden>
+        <p>Your horizon can be infinite while you're standing in a finite field. It's just true of a game of Snake, and it's true of joining something like this.</p>
+      </div>
+    </div>
+      <p>Think of the answer to these questions:</p>
+      <ul class="asks">
+        <li>What do you keep opening tabs about?<button class="egg small" data-egg="tabs" aria-expanded="false" aria-controls="r-tabs" aria-label="See how others answered">&#128172;</button>
+          <div class="openers" id="r-tabs" hidden>
+            <blockquote class="opener jotted">
+              <p><span>Tabs:</span> alternative social media designs, comedians and their processes, permaculture.</p>
+            </blockquote>
+            <blockquote class="opener sprawl">
+              <p>If you opened my browser tabs right now, you'd get a chaotic mix of automated workflow error logs, multi-platform analytics dashboards, obscure game mechanics breakdowns, music DAW projects, platform appeal emails, and late-night road trip route maps.</p>
+            </blockquote>
+          </div>
+        </li>
+        <li>Anything you're building, learning, or tinkering with? Links welcome.<button class="egg small" data-egg="tinker" aria-expanded="false" aria-controls="r-tinker" aria-label="See how others answered">&#128172;</button>
+          <div class="openers" id="r-tinker" hidden>
+            <blockquote class="opener plain">
+              <p>I'm writing a mental poker implementation, mostly for learning some more advanced cryptography.</p>
+            </blockquote>
+            <blockquote class="opener shout">
+              <p>some signage and event tools for CCC</p>
+            </blockquote>
+          </div>
+        </li>
+        <li>Anything you've been stuck on, or powering through, right now?</li>
+        <li>When do you feel most like an imposter?<button class="egg small" data-egg="fraud" aria-expanded="false" aria-controls="r-fraud" aria-label="See how others answered">&#128172;</button>
+          <div class="openers" id="r-fraud" hidden>
+            <blockquote class="opener shout">
+              <p>I feel like I'm an imposter, when I'm around people who actually know how to code.</p>
+            </blockquote>
+            <blockquote class="opener plain">
+              <p>When I propose a solution that's vaguely valid in my head and then hit the reality of having to implement it.</p>
+            </blockquote>
+            <blockquote class="opener jotted">
+              <p><span>Imposter:</span> here, since there are so many talented coders (seriously).</p>
+            </blockquote>
+            <blockquote class="opener sprawl">
+              <p>Every time metrics plummet or a custom workflow breaks overnight after a platform update, I catch myself wondering if I've just been building a house of cards on pure luck.</p>
+            </blockquote>
+          </div>
+        </li>
+      </ul>
+      <p>No need to answer all four. Just write what comes to mind and throw it out there in <a href="https://matrix.to/#/#joining-the-infinite-build:ungleich.ch">the group chat</a>:</p>
+      <p><a class="join" href="https://matrix.to/#/#joining-the-infinite-build:ungleich.ch">Join the group chat</a></p>
+      <p>Nobody's sure which room is the main chat at this point, but someone will read you and say hello back.</p>
+      <p class="door-when">There's a call most Tuesdays, 2pm Berlin time. The link usually gets made up the same day and shared by someone in Matrix.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+
+</div>
+
+<script>
+(function(){
+  var KEY = "ib-state-v2";
+  var TOTAL = 24;
+  var root = document.documentElement;
+  var state = {found:[], series:{}, shell:0, pos:{}};
+
+  var shellLines = [
+    "Nothing here.",
+    "Still nothing.",
+    "That's three times on an empty shell. We admire the persistence and worry about the method.",
+    "Fine. You need closure, so here is some philosophy: not every big emoji in your life is a door. Some are just shell emojis."
+  ];
+
+  try{
+    var raw = localStorage.getItem(KEY);
+    if(raw){ var p = JSON.parse(raw); if(p && typeof p === "object"){ state = Object.assign(state, p); } }
+  }catch(e){}
+
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+  function seed(str){
+    var h = 2166136261;
+    for(var i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return ((h >>> 0) % 1000) / 1000;
+  }
+
+  function messify(){
+    var n = state.found.length;
+    root.style.setProperty("--mess", n);
+    root.style.setProperty("--chop", Math.min(n / TOTAL, 1).toFixed(3));
+    root.style.setProperty("--amp", (6 + n * 1.3).toFixed(1));
+  }
+
+  function jostle(btn){
+    var sec = btn.closest("section");
+    if(!sec) return;
+    var r = seed(btn.dataset.egg);
+    var kids = sec.querySelectorAll("h2, p, .rhythm");
+    for(var i=0;i<kids.length;i++){
+      if(kids[i].closest(".note")) continue;
+      var k = (r + i * 0.37) % 1;
+      var deg = (k - 0.5) * 1.6 * Math.min(state.found.length, 10) * 0.26;
+      var x = (k - 0.5) * 9;
+      kids[i].style.transition = "transform 700ms cubic-bezier(.34,1.25,.5,1)";
+      kids[i].style.transform = "rotate(" + deg.toFixed(2) + "deg) translateX(" + x.toFixed(1) + "px)";
+    }
+  }
+
+  function drop(key){
+    var i = state.found.indexOf(key);
+    if(i > -1){ state.found.splice(i,1); }
+    delete state.series[key];
+  }
+
+  // shutting a reveal shuts everything that was living inside it
+  function shut(btn, panel){
+    panel.hidden = true;
+    btn.setAttribute("aria-expanded","false");
+    btn.classList.remove("spent");
+    btn.classList.remove("grown");
+    drop(btn.dataset.egg);
+    panel.querySelectorAll("[data-egg]").forEach(function(kid){
+      var kp = kid.getAttribute("aria-controls") ? document.getElementById(kid.getAttribute("aria-controls")) : null;
+      if(kp){
+        kp.hidden = true;
+        kp.querySelectorAll(".step").forEach(function(st){ st.hidden = true; });
+      }
+      if(kid.hasAttribute("aria-expanded")) kid.setAttribute("aria-expanded","false");
+      kid.classList.remove("spent");
+      kid.classList.remove("grown");
+      drop(kid.dataset.egg);
+    });
+    messify();
+    renderPod();
+    save();
+  }
+
+  function count(key){
+    if(state.found.indexOf(key) === -1){ state.found.push(key); }
+    messify();
+    renderPod();
+  }
+
+  function open(btn, restoring){
+    var key = btn.dataset.egg;
+    var panel = btn.getAttribute("aria-controls") ? document.getElementById(btn.getAttribute("aria-controls")) : null;
+
+    // the decoy: four things to say, on a loop, none of them counting
+    if(btn.dataset.decoy !== undefined){
+      if(restoring) return;
+      panel.hidden = false;
+      panel.querySelector("p").textContent = shellLines[state.shell % shellLines.length];
+      state.shell = (state.shell + 1) % shellLines.length;
+      btn.setAttribute("aria-expanded","true");
+      save();
+      return;
+    }
+
+    // the series: one line per press, in order
+    if(btn.dataset.series !== undefined){
+      var steps = panel.querySelectorAll(".step");
+      var was = state.series[key] || 0;
+      if(!restoring && was >= steps.length){
+        steps.forEach(function(st){ st.hidden = true; });
+        shut(btn, panel);
+        return;
+      }
+      var at = restoring ? was : was + 1;
+      if(at === 0) return;
+      panel.hidden = false;
+      for(var i=0;i<steps.length;i++){ steps[i].hidden = i >= at; }
+      state.series[key] = at;
+      btn.classList.add("grown");
+      btn.setAttribute("aria-expanded","true");
+      if(at >= steps.length){ btn.classList.add("spent"); }
+      count(key);
+      if(!restoring) jostle(btn);
+      save();
+      return;
+    }
+
+    if(!panel) return;
+    if(panel.hidden === false){
+      if(!restoring) shut(btn, panel);
+      return;
+    }
+    panel.hidden = false;
+    panel.style.setProperty("--tilt", ((seed(key) - 0.5) * 2.4).toFixed(2) + "deg");
+    btn.setAttribute("aria-expanded","true");
+    count(key);
+    if(!restoring) jostle(btn);
+    save();
+    bind();
+  }
+
+  function place(btn){
+    var p = state.pos[btn.dataset.egg];
+    if(p){
+      btn.style.setProperty("--dx", p[0] + "px");
+      btn.style.setProperty("--dy", p[1] + "px");
+      btn.style.setProperty("--rot", p[2] + "deg");
+    }
+  }
+
+  function wire(btn){
+    if(btn.dataset.wired) return;
+    btn.dataset.wired = "1";
+    place(btn);
+
+    var sx=0, sy=0, ox=0, oy=0, moved=false, active=false;
+
+    btn.addEventListener("pointerdown", function(e){
+      if(!btn.classList.contains("big")) return;
+      active = true; moved = false;
+      sx = e.clientX; sy = e.clientY;
+      var p = state.pos[btn.dataset.egg] || [0,0,0];
+      ox = p[0]; oy = p[1];
+      btn.setPointerCapture(e.pointerId);
+    });
+
+    btn.addEventListener("pointermove", function(e){
+      if(!active) return;
+      var dx = e.clientX - sx, dy = e.clientY - sy;
+      if(!moved && Math.abs(dx) + Math.abs(dy) < 9) return;
+      moved = true;
+      btn.classList.add("dragging");
+      var nx = ox + dx, ny = oy + dy;
+      var rot = Math.max(-24, Math.min(24, dx * 0.14));
+      btn.style.setProperty("--dx", nx + "px");
+      btn.style.setProperty("--dy", ny + "px");
+      btn.style.setProperty("--rot", rot + "deg");
+      state.pos[btn.dataset.egg] = [Math.round(nx), Math.round(ny), Math.round(rot)];
+    });
+
+    btn.addEventListener("pointerup", function(){
+      if(!active) return;
+      active = false;
+      btn.classList.remove("dragging");
+      if(moved){
+        save();
+        var p = state.pos[btn.dataset.egg];
+        if(Math.abs(p[0]) + Math.abs(p[1]) > 70) open(btn);
+      }
+    });
+
+    btn.addEventListener("pointercancel", function(){ active = false; btn.classList.remove("dragging"); });
+
+    btn.addEventListener("click", function(e){
+      if(moved){ moved = false; e.preventDefault(); return; }
+      open(btn);
+    });
+  }
+
+  function bind(){ document.querySelectorAll(".egg").forEach(wire); }
+
+  // the pod: one dolphin to start, one more for every find.
+  // touch any of them and the whole page goes back under.
+  var pod = document.querySelector("[data-pod]");
+
+  function renderPod(){
+    if(!pod) return;
+    var want = 1 + state.found.length;
+    var have = pod.children.length;
+    for(var i = have; i > want; i--){ pod.removeChild(pod.lastChild); }
+    for(var j = have; j < want; j++){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = "\ud83d\udc2c";
+      b.setAttribute("aria-label", "Put everything back where you found it");
+      b.addEventListener("click", resetAll);
+      pod.appendChild(b);
+    }
+  }
+
+  function resetAll(){
+    var kids = Array.prototype.slice.call(pod.children);
+    kids.forEach(function(k, i){
+      k.classList.remove("flip");
+      void k.offsetWidth;
+      setTimeout(function(){ k.classList.add("flip"); }, i * 40);
+    });
+    setTimeout(function(){
+      // every kind of panel, not just the note-shaped ones
+      document.querySelectorAll(".note, .doorframe, .openers, .step").forEach(function(n){ n.hidden = true; });
+      document.querySelectorAll("[aria-expanded]").forEach(function(e){
+        e.setAttribute("aria-expanded","false");
+        e.classList.remove("spent");
+        e.classList.remove("grown");
+      });
+      document.querySelectorAll("h2, p, .rhythm").forEach(function(el){ el.style.transform = ""; });
+      state.found = [];
+      state.series = {};
+      state.shell = 0;
+      messify();
+      save();
+      renderPod();
+    }, 400 + kids.length * 40);
+  }
+
+  // restore, then catch the pod up
+  bind();
+  messify();
+  state.found.slice().forEach(function(key){
+    var btn = document.querySelector('[data-egg="' + key + '"]');
+    if(btn) open(btn, true);
+  });
+  renderPod();
+
+  var doorway = document.querySelector(".doorway");
+  if(doorway){ doorway.addEventListener("click", function(){ open(doorway); }); }
+
+
+  // the sea stays put; past the hero it slides up so only the surface line rides along
+  var sea = document.querySelector(".sea");
+  if(sea){
+    var ticking = false;
+    function tide(){
+      var deep = Math.max(150, Math.min(260, window.innerWidth * 0.26));
+      var t = Math.min(window.scrollY / 340, 1);
+      t = t * t * (3 - 2 * t);
+      root.style.setProperty("--seaY", (-(deep - 70) * t).toFixed(1) + "px");
+      ticking = false;
+    }
+    window.addEventListener("scroll", function(){
+      if(!ticking){ ticking = true; requestAnimationFrame(tide); }
+    }, {passive:true});
+    window.addEventListener("resize", tide, {passive:true});
+    tide();
+  }
+})();
+</script>
 </body>
 </html>
