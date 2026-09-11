@@ -134,11 +134,12 @@ h1 em{font-style:italic;display:block}
   transform-origin:0 80%;
   margin:.5rem .3rem .2rem 0;
 }
-.pod{display:flex;flex-wrap:wrap;gap:.08em;line-height:1;margin-top:.5rem}
+.standfirst .pod{display:flex;flex-wrap:wrap;flex-direction:row;gap:.08em;line-height:1;margin-top:.5rem;max-width:100%}
 .pod button{
   appearance:none;background:none;border:0;padding:0;margin:0 .04em;
   font:inherit;font-size:.85em;line-height:1;color:inherit;cursor:pointer;
   display:inline-block;
+  flex:0 0 auto;
   transform-origin:50% 50%;
   animation:arrive .5s cubic-bezier(.2,1.4,.4,1);
 }
@@ -856,15 +857,15 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       <p>No investors, answering to each other instead, which is principled except when your friends aren't free on a Tuesday to be answered to.</p>
     </div>
     <p>Dolphins built none of it. They just swim around and occasionally mess with puffer fish and lost sailors.</p>
-    <p>We used to think that was because they hadn't figured out capitalism yet. Increasingly we think they figured it out first.<button class="egg small" data-egg="hash" aria-expanded="false" aria-controls="r-hash" aria-label="Something about guessing">&#129518;</button></p>
+    <p>Either they never worked out capitalism, or they worked it out first.<button class="egg small" data-egg="hash" aria-expanded="false" aria-controls="r-hash" aria-label="Something about guessing">&#129518;</button></p>
     <div class="note deep" id="r-hash" hidden>
       <p>Guessing what we're building next is basically brute-forcing a hash: technically possible and comically slow.</p>
-      <p>We used to explain hash functions with long division and call mathematics the language of the universe. We still stand by the long division.<button class="egg tiny" data-egg="euler" aria-expanded="false" aria-controls="r-euler" aria-label="Something about fairness">&#128208;</button><button class="egg tiny" data-egg="poets" aria-expanded="false" aria-controls="r-poets" aria-label="Something about cryptographers">&#128395;&#65039;</button></p>
+      <p>You can explain hash functions to a beginner using only long division. You can then use the Monster Group to explain that mathematics is the language of the universe. Nobody here will think you've been playing with puffer fish.<button class="egg tiny" data-egg="euler" aria-expanded="false" aria-controls="r-euler" aria-label="Something about fairness">&#128208;</button><button class="egg tiny" data-egg="poets" aria-expanded="false" aria-controls="r-poets" aria-label="Something about cryptographers">&#128395;&#65039;</button></p>
       <div class="note deepest" id="r-euler" hidden>
-        <p>We have, at various points, used Euler's identity, e<sup>i&#960;</sup> + 1 = 0, to explain Truth, Value, Fairness and Debt.</p>
+        <p>You might think that Truth, Value, Fairness and Debt are unrelated. But they can all be explained with Euler's identity, e<sup>i&#960;</sup> + 1 = 0, if you squint hard enough.</p>
       </div>
       <div class="note deepest" id="r-poets" hidden>
-        <p>The library is open. We used to say cryptographers are poets, infinite players redrawing the boundaries of conflict, communication and secrecy. Someone in this group wrote that sentence sincerely. We know who. We're not saying.</p>
+        <p>The library is open. Cryptographers are poets, infinite players redrawing the boundaries of conflict, communication and secrecy. Someone in this group wrote that sentence sincerely. We know who. We're not saying.</p>
       </div>
     </div>
   </div>
@@ -882,7 +883,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       <p>Half of us have it muted, and a stubborn remainder are still in the old Telegram chat they weren't checking when we started the Matrix one.</p>
     </div>
     <div class="note deep" id="r-coder" hidden>
-      <p>Every crypto community eventually produces someone with a manifesto and a token, quietly convinced they've solved civilization. We used to find that very funny, then we counted our own manifestos.<button class="egg tiny" data-egg="creed" aria-expanded="false" aria-controls="r-creed" aria-label="Something about the tokens">&#129534;</button></p>
+      <p>Every crypto community eventually produces someone with a manifesto and a token, quietly convinced they've solved civilization. It is very funny until you count your own.<button class="egg tiny" data-egg="creed" aria-expanded="false" aria-controls="r-creed" aria-label="Something about the tokens">&#129534;</button></p>
       <div class="note deepest" id="r-creed" hidden>
         <p>None of them have tokens, which we consider a moral distinction and everyone else considers a technicality.<button class="egg tiny" data-egg="coin" aria-expanded="false" aria-controls="r-coin" aria-label="Something about the room">&#128039;</button></p>
         <div class="note deepest" id="r-coin" hidden>
@@ -904,7 +905,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
           <p>Quantum outcomes are only predictable probabilistically. You might think that's a metaphor for a roadmap. It isn't. Roadmaps themselves are, in reality, quantum in nature.</p>
         </div>
         <div class="note deepest" id="r-otter" hidden>
-          <p>Taleb argues that people trust predictive models far more than the models deserve. We read that like we read every predictive model, and nod seriously.</p>
+          <p>Taleb argues that people trust predictive models far more than the models deserve. We don't see any limits in that assertion.</p>
         </div>
         <p>"Test in prod" really means the code is broken but we're sick of it so we're shipping it anyway.</p>
       </div>
@@ -1000,7 +1001,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       <p><a class="join" href="https://matrix.to/#/#joining-the-infinite-build:ungleich.ch">Join the group chat</a></p>
       <p>Nobody's sure which room is the main chat at this point, but someone will read you and say hello back.</p>
       <p>Remember to turn your matrix notifications on.</p>
-      <p class="door-when">There's a drop-in call most Tuesdays, starting at 2pm Central Europe time. The link usually gets made up the same day and shared by someone in Matrix.</p>
+      <p class="door-when">There's a call most Tuesdays, 2pm Berlin time. The link usually gets made up the same day and shared by someone in Matrix.</p>
     </div>
   </div>
 </section>
