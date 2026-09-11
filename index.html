@@ -85,7 +85,7 @@ header{position:relative;padding-top:0;margin-bottom:14vh}
   transition:transform 1.4s cubic-bezier(.4,0,.2,1);
 }
 .swell{position:absolute;inset:0;will-change:transform}
-.swell svg{position:absolute;top:0;left:0;width:200%;height:100%;display:block;fill:currentColor}
+.swell svg{position:absolute;top:-400%;left:0;width:200%;height:500%;display:block;fill:currentColor}
 /* the water keeps going above the fold, so heaving can never expose the fill's top edge */
 .swell::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:70vh;background:currentColor}
 .swell.s1{color:var(--sea-c);opacity:.55;animation:heave 7.3s ease-in-out infinite}
@@ -153,6 +153,8 @@ h1 em{font-style:italic;display:block}
 }
 
 /* ---------- sections ---------- */
+section.tucked{margin-top:-7vh;margin-bottom:10vh}
+section.snug{margin-bottom:calc(16vh - 100px)}
 section{
   margin:0 0 16vh;
   --dir:1;
@@ -202,7 +204,16 @@ a:hover{text-decoration-color:var(--mark)}
   animation:jiggle 9s ease-in-out infinite;
 }
 .egg.big.adrift{margin-left:min(38vw,340px)}
+.egg.big.sunk{margin-top:110px}
 .egg.big.spill{margin-left:-14vw}
+.egg.big.poised{margin-inline:auto;left:-6%;animation:beckon 3.4s ease-in-out infinite}
+@keyframes beckon{
+  0%,100%{transform:translate(var(--dx,0px),var(--dy,0px)) rotate(var(--rot,0deg)) scale(1)}
+  14%{transform:translate(var(--dx,0px),calc(var(--dy,0px) - 10px)) rotate(calc(var(--rot,0deg) - 6deg)) scale(1.06)}
+  30%{transform:translate(var(--dx,0px),var(--dy,0px)) rotate(calc(var(--rot,0deg) + 5deg)) scale(1)}
+  44%{transform:translate(var(--dx,0px),calc(var(--dy,0px) - 4px)) rotate(calc(var(--rot,0deg) - 2deg)) scale(1.02)}
+  58%{transform:translate(var(--dx,0px),var(--dy,0px)) rotate(var(--rot,0deg)) scale(1)}
+}
 .egg.big.in-door{
   font-size:clamp(3.4rem,13vw,5.4rem);
   margin:clamp(1.6rem,5vw,2.8rem) 0 .4rem clamp(0px,6vw,4rem);
@@ -399,6 +410,16 @@ a:hover{text-decoration-color:var(--mark)}
 }
 .roll{line-height:1.9}
 footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
+.clear{
+  appearance:none;background:none;border:0;padding:0;margin:0;
+  font:inherit;color:var(--ink-soft);cursor:pointer;
+  text-decoration:underline;text-decoration-thickness:1px;
+  text-underline-offset:.22em;text-decoration-color:var(--sea-b);
+}
+.clear:hover{color:var(--ink);text-decoration-color:var(--mark)}
+.clear:focus-visible{outline:3px solid var(--mark);outline-offset:4px;border-radius:4px}
+.said{display:inline;animation:arrive .5s cubic-bezier(.2,1.3,.4,1)}
+.said .clear{text-decoration:none;margin-left:.15em;font-size:1.15em;line-height:1}
 
 @media (prefers-reduced-motion: reduce){
   .swell,.swell svg,.egg.big,.pod button,.threshold{
@@ -619,6 +640,69 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   border:3px solid #8C8574;border-radius:2px;
   box-shadow:8px 9px 0 rgba(0,0,0,.22);transform:rotate(-1.4deg);
 }
+/* the four properties: one set, one style, no ornament */
+.floating.floating[data-theme="property"]{
+  background:#F7F5EE;color:#1B2A2E;
+  width:min(21rem,78vw);
+  border:1px solid #2B5F6E;border-left:5px solid #2B5F6E;border-radius:2px;
+  font-size:.95em;
+}
+.floating.floating[data-theme="property"]::before{text-align:left}
+/* 👣 a path only two people walked */
+.floating.floating[data-theme="crinkle"]{
+  background:#EDE6DA;color:#2B2419;
+  border:1px solid #A89B84;border-radius:42% 58% 45% 55% / 12% 10% 14% 12%;
+  padding:1.5rem 1.6rem;
+}
+/* 👁️ always already there */
+.floating.floating[data-theme="everyroom"]{
+  background:#15181C;color:#C9D4DA;
+  border:1px solid #333C44;border-radius:3px;
+}
+/* 🧱 a block of memory */
+.floating.floating[data-theme="argon"]{
+  background:
+    repeating-linear-gradient(0deg,transparent 0 19px,#B98A6E 19px 21px),
+    repeating-linear-gradient(90deg,transparent 0 46px,#B98A6E 46px 48px),#D8A98C;
+  color:#2E1C11;border:2px solid #8E6248;border-radius:2px;
+}
+/* 🐌 no hurrying it */
+.floating.floating[data-theme="vdf"]{
+  background:#E6EDDC;color:#25321A;
+  border:1px solid #7E9463;border-radius:60% 40% 55% 45% / 30% 28% 32% 30%;
+  padding:1.5rem 1.6rem;
+}
+/* ⛓ both, chained */
+.floating.floating[data-theme="both"]{
+  background:#DDE1E5;color:#1C2328;
+  border:3px double #6C7A85;border-radius:2px;
+}
+/* ⏱ the one thing with no workaround */
+.floating.floating[data-theme="budget"]{
+  background:#FBF7EC;color:#241F16;
+  border:2px solid #241F16;border-radius:50%;
+  width:min(21rem,78vw);aspect-ratio:1;display:flex;flex-direction:column;
+  justify-content:center;text-align:center;padding:2.8rem;font-size:.92em;
+}
+/* 💾 somebody else's shelf */
+.floating.floating[data-theme="chia"]{
+  background:#20242B;color:#D3DAE2;
+  border:1px solid #3C444F;border-top:18px solid #4A535F;border-radius:2px;
+  font-size:.93em;
+}
+/* 📦 still boxed */
+.floating.floating[data-theme="testnet"]{
+  background:#D8C49A;color:#3A2C15;
+  border:1px solid #A98A55;border-top:14px solid #C0A876;border-radius:2px;
+  box-shadow:6px 7px 0 rgba(0,0,0,.18);
+  font-size:.93em;
+}
+/* 🔦 what the torch is pointed at */
+.floating.floating[data-theme="shelf"]{
+  background:linear-gradient(168deg,#F3ECD8,#D9CDAE);color:#2A2312;
+  border:0;border-radius:3px 3px 26% 26% / 3px 3px 9% 9%;
+  box-shadow:0 18px 40px rgba(0,0,0,.3);
+}
 /* 📋 a clipboard */
 .floating.floating[data-theme="ddd"]{
   background:#FCFBF6;color:#22272A;
@@ -686,9 +770,9 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 <header>
   <div class="sea" aria-hidden="true">
    <div class="tide">
-    <div class="swell s1"><svg viewBox="0 0 2880 120" preserveAspectRatio="none"><path d="M0,64 C120,20 240,20 360,64 C480,108 600,108 720,64 C840,20 960,20 1080,64 C1200,108 1320,108 1440,64 C1560,20 1680,20 1800,64 C1920,108 2040,108 2160,64 C2280,20 2400,20 2520,64 C2640,108 2760,108 2880,64 L2880,0 L0,0 Z"/></svg></div>
-    <div class="swell s2"><svg viewBox="0 0 2880 120" preserveAspectRatio="none"><path d="M0,52 C240,98 480,6 720,52 C960,98 1200,6 1440,52 C1680,98 1920,6 2160,52 C2400,98 2640,6 2880,52 L2880,0 L0,0 Z"/></svg></div>
-    <div class="swell s3"><svg viewBox="0 0 2880 120" preserveAspectRatio="none"><path d="M0,38 C60,66 180,66 240,38 C300,10 420,10 480,38 C540,66 660,66 720,38 C780,10 900,10 960,38 C1020,66 1140,66 1200,38 C1260,10 1380,10 1440,38 C1500,66 1620,66 1680,38 C1740,10 1860,10 1920,38 C1980,66 2100,66 2160,38 C2220,10 2340,10 2400,38 C2460,66 2580,66 2640,38 C2700,10 2820,10 2880,38 L2880,0 L0,0 Z"/></svg></div>
+    <div class="swell s1"><svg viewBox="0 -480 2880 600" preserveAspectRatio="none"><path d="M0,64 C120,20 240,20 360,64 C480,108 600,108 720,64 C840,20 960,20 1080,64 C1200,108 1320,108 1440,64 C1560,20 1680,20 1800,64 C1920,108 2040,108 2160,64 C2280,20 2400,20 2520,64 C2640,108 2760,108 2880,64 L2880,-480 L0,-480 Z"/></svg></div>
+    <div class="swell s2"><svg viewBox="0 -480 2880 600" preserveAspectRatio="none"><path d="M0,52 C240,98 480,6 720,52 C960,98 1200,6 1440,52 C1680,98 1920,6 2160,52 C2400,98 2640,6 2880,52 L2880,-480 L0,-480 Z"/></svg></div>
+    <div class="swell s3"><svg viewBox="0 -480 2880 600" preserveAspectRatio="none"><path d="M0,38 C60,66 180,66 240,38 C300,10 420,10 480,38 C540,66 660,66 720,38 C780,10 900,10 960,38 C1020,66 1140,66 1200,38 C1260,10 1380,10 1440,38 C1500,66 1620,66 1680,38 C1740,10 1860,10 1920,38 C1980,66 2100,66 2160,38 C2220,10 2340,10 2400,38 C2460,66 2580,66 2640,38 C2700,10 2820,10 2880,38 L2880,-480 L0,-480 Z"/></svg></div>
    </div>
   </div>
 
@@ -704,30 +788,59 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 <main>
 
 <section>
-  <h2>How it works</h2>
-  <p class="rhythm">Transit Tuesday.</p>
-  <p>Everyone screenshares whatever they're actually working on. Your live environment, mid-thought. At least one person is contractually required to say "this was working this morning."</p>
-  <p>Screensharing is mandatory unless you have a doctor's note.</p>
-  <p>The chatroom is always there when you need it.<button class="egg small" data-egg="always" aria-expanded="false" aria-controls="r-always" aria-label="Something about the chatroom">&#9854;&#65039;</button></p>
-  <div class="note deep" id="r-always" hidden>
-    <p>For some reason it's also there when you don't.<button class="egg tiny" data-egg="muted" aria-expanded="false" aria-controls="r-muted" aria-label="Something about notifications">&#128277;</button><button class="egg small" data-egg="coder" aria-expanded="false" aria-controls="r-coder" aria-label="Something about the people here. Keep pressing.">&#129489;&#8205;&#128187;</button></p>
-    <div class="note deepest" id="r-muted" hidden>
-      <p>Half of us have it muted, and a stubborn remainder are still in the old Telegram chat they weren't checking when we started the Matrix one.</p>
-    </div>
-    <div class="note deep" id="r-coder" hidden>
-      <p>Every crypto community eventually produces someone with a manifesto and a token, quietly convinced they've solved civilization. We used to find that very funny, then we counted our own manifestos.<button class="egg tiny" data-egg="creed" aria-expanded="false" aria-controls="r-creed" aria-label="Something about the tokens">&#129534;</button></p>
-      <div class="note deepest" id="r-creed" hidden>
-        <p>None of them have tokens, which we consider a moral distinction and everyone else considers a technicality.<button class="egg tiny" data-egg="coin" aria-expanded="false" aria-controls="r-coin" aria-label="Something about the room">&#128039;</button></p>
-        <div class="note deepest" id="r-coin" hidden>
-          <p>Walk into an Ethereum dev event and you can read the room in about four seconds. Half of them run Arch, or NixOS, or never quite left CCC congress. The rest are here for the merch and free money. We are, unfortunately, extremely the first half, and serving it.</p>
+  <h2>Building an anti-capture environment</h2>
+  <p>We're building our own tools, anti-capture down to the fibres. Cryptographic systems that give each builder control of their own experience. Unix-like, composable, mostly harmless.</p>
+  <button class="egg big poised" data-egg="toolbelt" data-burst="r-toolbelt r-prop-cal r-prop-chat r-prop-tx r-prop-search" aria-expanded="false" aria-controls="r-toolbelt r-prop-cal r-prop-chat r-prop-tx r-prop-search" aria-label="Toolbelt">&#129520;</button>
+  <div class="note" id="r-toolbelt" hidden>
+    <p>We say "composable" and "anti-capture" like we've got it all figured out. We don't. Half this toolbelt is duct tape held together by good intentions, but good intentions are the root of good cryptographic properties.</p>
+  </div>
+  <div class="note" id="r-prop-cal" data-theme="property" data-mark="&#128197;" hidden>
+    <p>A calendar server that never learns who spends time with whom.</p>
+  </div>
+  <div class="note" id="r-prop-chat" data-theme="property" data-mark="&#128101;" hidden>
+    <p>A group chat that holds no list of who's in it.</p>
+  </div>
+  <div class="note" id="r-prop-tx" data-theme="property" data-mark="&#9203;" hidden>
+    <p>A transaction the machine running it can't read until the moment it runs.</p>
+  </div>
+  <div class="note" id="r-prop-search" data-theme="property" data-mark="&#128270;" hidden>
+    <p>An agent that looks things up without accidentally revealing who's searching.</p>
+  </div>
+</section>
+
+<section class="snug">
+  <button class="egg big spill" data-egg="shelf" aria-expanded="false" aria-controls="r-shelf" aria-label="Torch">&#128294;</button>
+  <div class="note" id="r-shelf" hidden>
+    <p>We built a calendar. Then we parked it. The maths underneath turned out to answer a question Ink &amp; Switch had left open for five years, which we found out afterwards, and by accident.</p>
+    <p>You can't plan that. You just need a shelf and people who listen to your craziness.<button class="egg small" data-egg="testnet" aria-expanded="false" aria-controls="r-testnet" aria-label="Something about the shelf">&#128230;</button></p>
+    <div class="note deep" id="r-testnet" hidden>
+      <p>Shelves are underrated. A shelf costs nothing to run, holds everything at roughly the height of a person, has no opinion about what goes on it, and never once asks what your plans are.</p>
+      <p>Someone here put a box on a shelf to get it out of the way and forgot about it for four years. Then they took down the wrong box, and found the thing they had spent that morning looking for. It had been at eye level the whole time, waiting to be asked.<button class="egg small" data-egg="crinkle" aria-expanded="false" aria-controls="r-crinkle" aria-label="Something off the shelf">&#128099;</button></p>
+      <div class="note deep" id="r-crinkle" hidden>
+        <p>One concept puts you in a room with whoever visited the same webpages in the same order. Nobody builds the room and nobody else can find it. The websites that made it possible never find out it happened. It is the crinkliest possible answer to a question nobody asked.<button class="egg small" data-egg="everyroom" aria-expanded="false" aria-controls="r-everyroom" aria-label="Something about who else is there">&#128065;&#65039;</button></p>
+        <div class="note deep" id="r-everyroom" hidden>
+          <p>Unfortunately, rooms nobody can find are easy enough to find if you are willing to be in all of them at once. A scraper walks every page in every order, arrives everywhere, and waits, which it is very good at.<button class="egg small" data-egg="argon" aria-expanded="false" aria-controls="r-argon" aria-label="Something that costs memory">&#129521;</button></p>
+          <div class="note deep" id="r-argon" hidden>
+            <p>So you reach for a hash that costs memory. Argon2 makes every guess reserve a large block of RAM that can't be shared with the next guess. This works right up until you notice nothing stops an attacker running thousands of guesses side by side.<button class="egg small" data-egg="vdf" aria-expanded="false" aria-controls="r-vdf" aria-label="Something that can't be hurried">&#128012;</button></p>
+            <div class="note deep" id="r-vdf" hidden>
+              <p>So you reach for a delay that can't be hurried. A verifiable delay function takes a fixed number of steps that have to happen one after another, and no amount of hardware shortens it. But it uses almost no memory, so a single chip can run thousands of them at once.<button class="egg small" data-egg="both" aria-expanded="false" aria-controls="r-both" aria-label="Something about using both">&#9939;</button></p>
+              <div class="note deep" id="r-both" hidden>
+                <p>So you use both, since they're both on your shelf anyway. Each guess now costs seconds that can't be parallelised and memory that can't be shared, and having plenty of one gets you nothing off the other.<button class="egg small" data-egg="budget" aria-expanded="false" aria-controls="r-budget" aria-label="Something about the clock">&#9201;&#65039;</button></p>
+                <div class="note deep" id="r-budget" hidden>
+                  <p>Running the current design on a phone needs eighty-four seconds of work per minute. A minute has sixty. So this design breaks here, unless you can convince a clock that time is merely a construct.<button class="egg small" data-egg="chia" aria-expanded="false" aria-controls="r-chia" aria-label="Something about someone who solved it">&#128190;</button></p>
+                  <div class="note deep" id="r-chia" hidden>
+                    <p>The Chia blockchain solved this puzzle in 2018, but for data storage instead of chance encounters with strangers. Their version pays in disk space instead of electricity, on the grounds that the world was already full of disk space nobody was using.</p>
+                    <p>What the world did was go out and buy every hard drive in it, because now they could make profit on empty hard disks. And the economic model collapsed in spite of the cryptography being right.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</section>
-
-<section>
-  <button class="egg big adrift" data-egg="dolphin" aria-expanded="false" aria-controls="r-dolphin" aria-label="Dolphin">&#128044;</button>
+  <button class="egg big adrift sunk" data-egg="dolphin" aria-expanded="false" aria-controls="r-dolphin" aria-label="Dolphin">&#128044;</button>
   <div class="note" id="r-dolphin" hidden>
     <p>Humans built the wheel<button class="egg small" data-egg="wheel" aria-expanded="false" aria-controls="r-wheel" aria-label="Something about the wheel">&#128734;</button>, New York, wars, and venture capital<button class="egg small" data-egg="money" aria-expanded="false" aria-controls="r-money" aria-label="Something about venture capital">&#128184;</button>. We are very proud of this.</p>
     <div class="note deep" id="r-wheel" hidden>
@@ -736,7 +849,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     <div class="note deep" id="r-money" hidden>
       <p>No investors, answering to each other instead, which is principled except when your friends aren't free on a Tuesday to be answered to.</p>
     </div>
-    <p>Dolphins built none of it. They just swim around and occasionally rescue a drowning sailor.</p>
+    <p>Dolphins built none of it. They just swim around and occasionally mess with puffer fish and lost sailors.</p>
     <p>We used to think that was because they hadn't figured out capitalism yet. Increasingly we think they figured it out first.<button class="egg small" data-egg="hash" aria-expanded="false" aria-controls="r-hash" aria-label="Something about guessing">&#129518;</button></p>
     <div class="note deep" id="r-hash" hidden>
       <p>Guessing what we're building next is basically brute-forcing a hash: technically possible and comically slow.</p>
@@ -745,20 +858,34 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
         <p>We have, at various points, used Euler's identity, e<sup>i&#960;</sup> + 1 = 0, to explain Truth, Value, Fairness and Debt.</p>
       </div>
       <div class="note deepest" id="r-poets" hidden>
-        <p>The library is open. We used to call cryptographers throughout history poets, and infinite players redrawing the boundaries of conflict, communication and secrecy. Someone in this group wrote that sentence sincerely. We know who. We're not saying.</p>
+        <p>The library is open. We used to say cryptographers are poets, infinite players redrawing the boundaries of conflict, communication and secrecy. Someone in this group wrote that sentence sincerely. We know who. We're not saying.</p>
       </div>
     </div>
   </div>
 </section>
 
 <section>
-  <h2>Building our own environment</h2>
-  <p>We're building the tools for this too, anti-capture down to the fibres. Cryptographic systems that give each builder control of their own experience. Unix-like, composable, mostly harmless.</p>
-  <button class="egg big spill" data-egg="toolbelt" aria-expanded="false" aria-controls="r-toolbelt" aria-label="Toolbelt">&#129520;</button>
-  <div class="note" id="r-toolbelt" hidden>
-    <p>We say "composable" and "anti-capture" like we've got it all figured out. We don't. Half this toolbelt is duct tape held together by good intentions. It works anyway.<button class="egg small" data-egg="ddd" aria-expanded="false" aria-controls="r-ddd" aria-label="Something about process">&#128203;</button></p>
+  <h2>How we work</h2>
+  <p class="rhythm">Transit Tuesday.</p>
+  <p>Everyone screenshares whatever they're actually working on. Your live environment, mid-thought. At least one person is contractually required to say "this was working this morning."</p>
+  <p>Screensharing is mandatory unless you have a doctor's note.</p>
+  <p>The chatroom is always there when you need it.<button class="egg small" data-egg="always" aria-expanded="false" aria-controls="r-always" aria-label="Something about the channel">&#35;&#65039;&#8419;</button></p>
+  <div class="note deep" id="r-always" hidden>
+    <p>For some reason it's also there when you don't.<button class="egg tiny" data-egg="muted" aria-expanded="false" aria-controls="r-muted" aria-label="Something about notifications">&#128277;</button><button class="egg small" data-egg="coder" aria-expanded="false" aria-controls="r-coder" aria-label="Something about the people here. Keep pressing.">&#129489;&#8205;&#128187;</button><button class="egg tiny" data-egg="ddd" aria-expanded="false" aria-controls="r-ddd" aria-label="Something about process">&#128203;</button></p>
+    <div class="note deepest" id="r-muted" hidden>
+      <p>Half of us have it muted, and a stubborn remainder are still in the old Telegram chat they weren't checking when we started the Matrix one.</p>
+    </div>
+    <div class="note deep" id="r-coder" hidden>
+      <p>Every crypto community eventually produces someone with a manifesto and a token, quietly convinced they've solved civilization. We used to find that very funny, then we counted our own manifestos.<button class="egg tiny" data-egg="creed" aria-expanded="false" aria-controls="r-creed" aria-label="Something about the tokens">&#129534;</button></p>
+      <div class="note deepest" id="r-creed" hidden>
+        <p>None of them have tokens, which we consider a moral distinction and everyone else considers a technicality.<button class="egg tiny" data-egg="coin" aria-expanded="false" aria-controls="r-coin" aria-label="Something about the room">&#128039;</button></p>
+        <div class="note deepest" id="r-coin" hidden>
+          <p>Walk into an Ethereum dev event and you can read the room in about four seconds. Half of them run Arch, or NixOS, or never quite left CCC. Then there's everyone in it for the merch and free money. We are, unfortunately, extremely the first half.</p>
+        </div>
+      </div>
+    </div>
     <div class="note deep" id="r-ddd" hidden>
-      <p>There used to be an official system for this. Directions, Discoveries, Difficulties. Bi-weekly for full-time projects, monthly for part-time ones. It had a name and everything. Nobody follows it. We just tell each other what's going on.<button class="egg tiny" data-egg="prod" aria-expanded="false" aria-controls="r-prod" aria-label="Something about testing">&#129514;</button></p>
+      <p>There used to be an official system for keeping up. Directions, Discoveries, Difficulties. Bi-weekly for full-time projects, monthly for part-time ones. It had a name and everything. Nobody follows it. We just tell each other what's going on.<button class="egg tiny" data-egg="prod" aria-expanded="false" aria-controls="r-prod" aria-label="Something about testing">&#129514;</button></p>
       <div class="note deepest" id="r-prod" hidden>
         <p>We still try to dignify the phrase "testing in production."</p>
         <p class="roll">Quantum photons are observed.<button class="egg tiny" data-egg="dice" aria-expanded="false" aria-controls="r-dice" aria-label="Something about photons">&#127922;</button><br>
@@ -768,18 +895,25 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
           <p>Chomsky's point is that you can't run a controlled experiment on a country, since there's no second, identical Earth to test against. Sadly, everything we try has to be a patch on this one.</p>
         </div>
         <div class="note deepest" id="r-dice" hidden>
-          <p>Quantum outcomes are only predictable probabilistically. You might think that's a metaphor for a roadmap. It isn't. It's that roadmaps are all quantum in nature.</p>
+          <p>Quantum outcomes are only predictable probabilistically. You might think that's a metaphor for a roadmap. It isn't. Roadmaps themselves are, in reality, quantum in nature.</p>
         </div>
         <div class="note deepest" id="r-otter" hidden>
-          <p>Taleb's point is that people trust predictive models far more than the models deserve. We read that, and nod seriously.</p>
+          <p>Taleb argues that people trust predictive models far more than the models deserve. We read that like we read every predictive model, and nod seriously.</p>
         </div>
         <p>"Test in prod" really means the code is broken but we're sick of it so we're shipping it anyway.</p>
       </div>
     </div>
   </div>
+</section>
+
+<section class="tucked">
   <button class="egg big" data-egg="shell" data-decoy aria-expanded="false" aria-controls="r-shell" aria-label="Shell">&#128026;</button>
   <div class="note deep" id="r-shell" hidden aria-live="polite">
     <p></p>
+  </div>
+  <button class="egg big spill" data-egg="snake" aria-expanded="false" aria-controls="r-snake" aria-label="Snake">&#128013;</button>
+  <div class="note" id="r-snake" hidden>
+    <p>Your horizon can be infinite while you're standing in a finite field. (That's true of a game of snake, and it's true of most things.)</p>
   </div>
 </section>
 
@@ -799,7 +933,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 
   <div class="doorframe" id="r-door" hidden>
     <div class="door-panel">
-      <p>Why do these things have application forms? Applying to meet people you're about to be friends with is a strange thing to do. We're a different kind of strange.</p>
+      <p>Why do these things have application forms? Applying to meet people you're about to be friends with is a strange thing to do. We're strange, but not that strange.</p>
       <p>Think of the answer to these questions:</p>
       <ul class="asks">
         <li>What do you keep opening tabs about?<button class="egg small" data-egg="tabs" aria-expanded="false" aria-controls="r-tabs" aria-label="See how others answered">&#128172;</button>
@@ -848,20 +982,18 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       </ul>
     <button class="egg big in-door" data-egg="wave" aria-expanded="false" aria-controls="r-wave" aria-label="Wave">&#127754;</button>
     <div class="note wavy" id="r-wave" hidden>
-      <p>Nobody grades your answers. You'll probably feel like you're oversharing. That's the correct amount.<button class="egg small" data-egg="draft" aria-expanded="false" aria-controls="r-draft" aria-label="Something about drafts">&#128220;</button><button class="egg small" data-egg="waves" aria-expanded="false" aria-controls="r-waves" aria-label="Something about waves">&#127744;</button><button class="egg small" data-egg="snake" aria-expanded="false" aria-controls="r-snake" aria-label="Something about horizons">&#128013;</button></p>
+      <p>Nobody grades your answers. You'll probably feel like you're oversharing. That's the correct amount.<button class="egg small" data-egg="draft" aria-expanded="false" aria-controls="r-draft" aria-label="Something about drafts">&#128220;</button><button class="egg small" data-egg="waves" aria-expanded="false" aria-controls="r-waves" aria-label="Something about waves">&#127744;</button></p>
       <div class="note deep" id="r-draft" hidden>
-        <p>This whole thing has technically been an early draft for two years. We've decided that's just what drafts are now.</p>
+        <p>This whole thing has technically been an early draft for two years. You're reading the parts that survived the last edit.</p>
       </div>
       <div class="note deep" id="r-waves" hidden>
         <p>We have a theory called waves of centralisation. Decentralise, consolidate, decentralise again, historically inevitable. We have citations, but thought this ripple effect would make the point better.</p>
-      </div>
-      <div class="note deep" id="r-snake" hidden>
-        <p>Your horizon can be infinite while you're standing in a finite field. (That's true of a game of snake, and it's true of most things.)</p>
       </div>
     </div>
       <p>No need to answer all four. Just write what comes to mind and throw it out there in <a href="https://matrix.to/#/#joining-the-infinite-build:ungleich.ch">the group chat</a>:</p>
       <p><a class="join" href="https://matrix.to/#/#joining-the-infinite-build:ungleich.ch">Join the group chat</a></p>
       <p>Nobody's sure which room is the main chat at this point, but someone will read you and say hello back.</p>
+      <p>Remember to turn your matrix notifications on.</p>
       <p class="door-when">There's a call most Tuesdays, 2pm Berlin time. The link usually gets made up the same day and shared by someone in Matrix.</p>
     </div>
   </div>
@@ -869,6 +1001,9 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 
 </main>
 
+<footer>
+  <p id="clear-line"><button type="button" class="clear" id="clear-all">Clear all my data</button></p>
+</footer>
 
 </div>
 
@@ -954,6 +1089,25 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     if(opened.indexOf(el) === -1){ opened.push(el); }
   }
 
+  // a burst fans its followers around the window they belong to. offsets, not
+  // rects: the anchor may still be animating and its rect would be scaled.
+  function fanWindow(el, anchor, i, n){
+    if(window.innerWidth < 760){ return false; }
+    var w = el.offsetWidth, h = el.offsetHeight;
+    var cx = anchor.offsetLeft + anchor.offsetWidth / 2;
+    var cy = anchor.offsetTop + anchor.offsetHeight / 2;
+    var rx = (anchor.offsetWidth + w) / 2 + 30;
+    var ry = (anchor.offsetHeight + h) / 2 + 26;
+    var a = (n < 2 ? 0 : -142 + 284 * (i / (n - 1))) * Math.PI / 180;
+    var x = cx + Math.sin(a) * rx - w / 2;
+    var y = cy - Math.cos(a) * ry - h / 2;
+    el.style.left = Math.max(8, Math.min(x, window.innerWidth - w - 8)) + "px";
+    el.style.top = Math.max(8, y) + "px";
+    el.style.zIndex = String(++zTop);
+    if(opened.indexOf(el) === -1){ opened.push(el); }
+    return true;
+  }
+
   // everything opens and closes by swelling to its own height
   function swell(el, origin, btn){
     el.hidden = false;
@@ -964,11 +1118,12 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
         document.body.appendChild(el);
       }
       el.__owner = btn.closest(".floating") || null;
-      el.dataset.mark = (btn.textContent || "").trim();
+      if(!el.dataset.mark){ el.dataset.mark = (btn.textContent || "").trim(); }
       el.style.setProperty("--accent", "hsl(" + Math.round(seed(btn.dataset.egg) * 360) + " 42% 44%)");
-      el.dataset.theme = btn.dataset.egg;
+      if(!el.dataset.theme){ el.dataset.theme = btn.dataset.egg; }
       el.style.setProperty("--mark-size", (1.35 + seed(btn.dataset.egg + "size") * 1.9).toFixed(2) + "rem");
-      placeWindow(el, btn);
+      if(!(el.__fan && fanWindow(el, el.__fan.anchor, el.__fan.i, el.__fan.n))){ placeWindow(el, btn); }
+      el.__fan = null;
       el.style.touchAction = "none";
       if(CALM || !el.animate) return;
       if(el.__anim){ el.__anim.cancel(); }
@@ -1014,7 +1169,8 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   }
 
   function trigger(panel){
-    return document.querySelector('[aria-controls="' + panel.id + '"]');
+    // aria-controls may name several panels, so match a word in the list
+    return document.querySelector('[aria-controls~="' + panel.id + '"]');
   }
 
   // a window closes everything it opened
@@ -1070,7 +1226,13 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     if(e.target.closest("a, button")) return;                       // links and nested eggs still work
     if(String(window.getSelection())) return;                       // mid text-selection
     var t = trigger(win);
-    if(t){ shut(t, win); }
+    if(!t) return;
+    // a fanned follower dismisses only itself; the anchor closes the whole set
+    if(t.dataset.burst !== undefined && win.id !== t.dataset.burst.split(/\s+/)[0]){
+      ebb(win);
+      return;
+    }
+    shut(t, win);
   });
 
   document.addEventListener("pointerdown", function(e){
@@ -1116,6 +1278,12 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   // shutting a reveal shuts everything that was living inside it
   function shut(btn, panel){
     ebb(panel);
+    if(btn.dataset.burst !== undefined){
+      btn.dataset.burst.split(/\s+/).forEach(function(id){
+        var el = document.getElementById(id);
+        if(el && el !== panel && !el.hidden){ ebb(el); }
+      });
+    }
     btn.setAttribute("aria-expanded","false");
     btn.classList.remove("spent");
     btn.classList.remove("grown");
@@ -1144,7 +1312,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 
   function open(btn, restoring){
     var key = btn.dataset.egg;
-    var panel = btn.getAttribute("aria-controls") ? document.getElementById(btn.getAttribute("aria-controls")) : null;
+    var panel = btn.getAttribute("aria-controls") ? document.getElementById(btn.getAttribute("aria-controls").split(/\s+/)[0]) : null;
 
     // the decoy: four things to say, on a loop, none of them counting
     if(btn.dataset.decoy !== undefined){
@@ -1177,6 +1345,32 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       btn.classList.add("grown");
       btn.setAttribute("aria-expanded","true");
       if(at >= steps.length){ btn.classList.add("spent"); }
+      count(key);
+      if(!restoring) jostle(btn);
+      save();
+      return;
+    }
+
+    // the burst: one button, several windows, arriving one after another
+    if(btn.dataset.burst !== undefined){
+      var ids = btn.dataset.burst.split(/\s+/);
+      if(!panel.hidden){
+        if(!restoring) shut(btn, panel);
+        return;
+      }
+      var anchor = document.getElementById(ids[0]);
+      ids.forEach(function(id, i){
+        var el = document.getElementById(id);
+        if(!el || !el.hidden) return;
+        el.style.setProperty("--tilt", ((seed(id) - 0.5) * 2.4).toFixed(2) + "deg");
+        if(restoring){ el.hidden = false; return; }
+        if(i > 0){ el.__fan = {anchor: anchor, i: i - 1, n: ids.length - 1}; }
+        setTimeout(function(){
+          swell(el, null, btn);
+          if(i === ids.length - 1){ anchor.style.zIndex = String(++zTop); }
+        }, i * 90);
+      });
+      btn.setAttribute("aria-expanded","true");
       count(key);
       if(!restoring) jostle(btn);
       save();
@@ -1305,11 +1499,78 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   // restore, then catch the pod up
   bind();
   messify();
-  state.found.slice().forEach(function(key){
-    var btn = document.querySelector('[data-egg="' + key + '"]');
-    if(btn) open(btn, true);
+  // an egg that no longer exists leaves its key behind, where it would go on
+  // counting forever. drop those first, so the store heals itself on load.
+  state.found = state.found.filter(function(key){
+    return !!document.querySelector('[data-egg="' + key + '"]');
   });
+  Object.keys(state.series).forEach(function(key){
+    if(!document.querySelector('[data-egg="' + key + '"]')){ delete state.series[key]; }
+  });
+  state.found.slice().forEach(function(key){
+    open(document.querySelector('[data-egg="' + key + '"]'), true);
+  });
+  save();
   renderPod();
+
+  // the toolbox opens itself as you go past, once, if you have not already
+  var box = document.querySelector('[data-egg="toolbelt"]');
+  if(box){
+    var nudged = false, peeking = false;
+    var peek = function(){
+      peeking = false;
+      if(nudged) return;
+      if(box.getBoundingClientRect().top > window.innerHeight / 2) return;
+      nudged = true;
+      window.removeEventListener("scroll", onScroll);
+      var panel = document.getElementById("r-toolbelt");
+      if(panel && panel.hidden){ open(box); }
+    };
+    var onScroll = function(){
+      if(!peeking){ peeking = true; requestAnimationFrame(peek); }
+    };
+    window.addEventListener("scroll", onScroll, {passive: true});
+  }
+
+  var clear = document.getElementById("clear-all");
+  if(clear){
+    clear.addEventListener("click", function(){
+      document.querySelectorAll(".note, .doorframe, .openers, .step").forEach(function(n){ n.hidden = true; });
+      document.querySelectorAll("[aria-expanded]").forEach(function(e){
+        e.setAttribute("aria-expanded","false");
+        e.classList.remove("spent");
+        e.classList.remove("grown");
+      });
+      document.querySelectorAll("h2, p, .rhythm").forEach(function(el){ el.style.transform = ""; });
+      document.querySelectorAll(".egg").forEach(function(el){
+        el.style.removeProperty("--dx");
+        el.style.removeProperty("--dy");
+        el.style.removeProperty("--rot");
+      });
+      state = {found:[], series:{}, shell:0, pos:{}};
+      try{ localStorage.removeItem(KEY); }catch(e){}
+      messify();
+      renderPod();
+      var line = document.getElementById("clear-line");
+      if(line.querySelector(".said")) return;
+      clear.hidden = true;
+      var said = document.createElement("span");
+      said.className = "said gone";
+      said.textContent = "Your data was deleted. It was never on our servers anyway, but you can never be too careful these days. ";
+      var back = document.createElement("button");
+      back.type = "button";
+      back.className = "clear";
+      back.setAttribute("aria-label", "Put the button back");
+      back.textContent = "\u00d7";
+      back.addEventListener("click", function(){
+        line.removeChild(said);
+        clear.hidden = false;
+        clear.focus();
+      });
+      said.appendChild(back);
+      line.appendChild(said);
+    });
+  }
 
   var doorway = document.querySelector(".doorway");
   if(doorway){ doorway.addEventListener("click", function(){ open(doorway); }); }
@@ -1321,9 +1582,11 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     var ticking = false;
     function tide(){
       var deep = Math.max(150, Math.min(260, window.innerWidth * 0.26));
+      // phones put a toolbar where the water should be, so start part-way up
+      var rest = window.innerWidth < 700 ? 34 : 0;
       var t = Math.min(window.scrollY / 340, 1);
       t = t * t * (3 - 2 * t);
-      root.style.setProperty("--seaY", (-(deep - 70) * t).toFixed(1) + "px");
+      root.style.setProperty("--seaY", (-(rest + (deep - 70 - rest) * t)).toFixed(1) + "px");
       ticking = false;
     }
     window.addEventListener("scroll", function(){
