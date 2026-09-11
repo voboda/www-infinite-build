@@ -85,7 +85,7 @@ header{position:relative;padding-top:0;margin-bottom:14vh}
   transition:transform 1.4s cubic-bezier(.4,0,.2,1);
 }
 .swell{position:absolute;inset:0;will-change:transform}
-.swell svg{position:absolute;top:-400%;left:0;width:200%;height:500%;display:block;fill:currentColor}
+.swell svg{position:absolute;top:-400%;left:-100%;width:400%;height:500%;display:block;fill:currentColor}
 /* the water keeps going above the fold, so heaving can never expose the fill's top edge */
 .swell::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:70vh;background:currentColor}
 .swell.s1{color:var(--sea-c);opacity:.55;animation:heave 7.3s ease-in-out infinite}
@@ -94,7 +94,7 @@ header{position:relative;padding-top:0;margin-bottom:14vh}
 .swell.s1 svg{animation:drift 47s linear infinite}
 .swell.s2 svg{animation:drift 31s linear infinite}
 .swell.s3 svg{animation:drift 23s linear infinite reverse}
-@keyframes drift{to{transform:translateX(-50%)}}
+@keyframes drift{to{transform:translateX(-25%)}}
 @keyframes heave{
   0%   {transform:translateY(calc(var(--amp) * 0.4px)) scaleY(1)}
   38%  {transform:translateY(calc(var(--amp) * -1px)) scaleY(1.06)}
@@ -134,7 +134,7 @@ h1 em{font-style:italic;display:block}
   transform-origin:0 80%;
   margin:.5rem .3rem .2rem 0;
 }
-.pod{display:inline;line-height:1}
+.pod{display:flex;flex-wrap:wrap;gap:.08em;line-height:1;margin-top:.5rem}
 .pod button{
   appearance:none;background:none;border:0;padding:0;margin:0 .04em;
   font:inherit;font-size:.85em;line-height:1;color:inherit;cursor:pointer;
@@ -770,9 +770,9 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 <header>
   <div class="sea" aria-hidden="true">
    <div class="tide">
-    <div class="swell s1"><svg viewBox="0 -480 2880 600" preserveAspectRatio="none"><path d="M0,64 C120,20 240,20 360,64 C480,108 600,108 720,64 C840,20 960,20 1080,64 C1200,108 1320,108 1440,64 C1560,20 1680,20 1800,64 C1920,108 2040,108 2160,64 C2280,20 2400,20 2520,64 C2640,108 2760,108 2880,64 L2880,-480 L0,-480 Z"/></svg></div>
-    <div class="swell s2"><svg viewBox="0 -480 2880 600" preserveAspectRatio="none"><path d="M0,52 C240,98 480,6 720,52 C960,98 1200,6 1440,52 C1680,98 1920,6 2160,52 C2400,98 2640,6 2880,52 L2880,-480 L0,-480 Z"/></svg></div>
-    <div class="swell s3"><svg viewBox="0 -480 2880 600" preserveAspectRatio="none"><path d="M0,38 C60,66 180,66 240,38 C300,10 420,10 480,38 C540,66 660,66 720,38 C780,10 900,10 960,38 C1020,66 1140,66 1200,38 C1260,10 1380,10 1440,38 C1500,66 1620,66 1680,38 C1740,10 1860,10 1920,38 C1980,66 2100,66 2160,38 C2220,10 2340,10 2400,38 C2460,66 2580,66 2640,38 C2700,10 2820,10 2880,38 L2880,-480 L0,-480 Z"/></svg></div>
+    <div class="swell s1"><svg viewBox="0 -480 5760 600" preserveAspectRatio="none"><path d="M0,64 C120,20 240,20 360,64 C480,108 600,108 720,64 C840,20 960,20 1080,64 C1200,108 1320,108 1440,64 C1560,20 1680,20 1800,64 C1920,108 2040,108 2160,64 C2280,20 2400,20 2520,64 C2640,108 2760,108 2880,64 C3000,20 3120,20 3240,64 C3360,108 3480,108 3600,64 C3720,20 3840,20 3960,64 C4080,108 4200,108 4320,64 C4440,20 4560,20 4680,64 C4800,108 4920,108 5040,64 C5160,20 5280,20 5400,64 C5520,108 5640,108 5760,64 L5760,-480 L0,-480 Z"/></svg></div>
+    <div class="swell s2"><svg viewBox="0 -480 5760 600" preserveAspectRatio="none"><path d="M0,52 C240,98 480,6 720,52 C960,98 1200,6 1440,52 C1680,98 1920,6 2160,52 C2400,98 2640,6 2880,52 C3120,98 3360,6 3600,52 C3840,98 4080,6 4320,52 C4560,98 4800,6 5040,52 C5280,98 5520,6 5760,52 L5760,-480 L0,-480 Z"/></svg></div>
+    <div class="swell s3"><svg viewBox="0 -480 5760 600" preserveAspectRatio="none"><path d="M0,38 C60,66 180,66 240,38 C300,10 420,10 480,38 C540,66 660,66 720,38 C780,10 900,10 960,38 C1020,66 1140,66 1200,38 C1260,10 1380,10 1440,38 C1500,66 1620,66 1680,38 C1740,10 1860,10 1920,38 C1980,66 2100,66 2160,38 C2220,10 2340,10 2400,38 C2460,66 2580,66 2640,38 C2700,10 2820,10 2880,38 C2940,66 3060,66 3120,38 C3180,10 3300,10 3360,38 C3420,66 3540,66 3600,38 C3660,10 3780,10 3840,38 C3900,66 4020,66 4080,38 C4140,10 4260,10 4320,38 C4380,66 4500,66 4560,38 C4620,10 4740,10 4800,38 C4860,66 4980,66 5040,38 C5100,10 5220,10 5280,38 C5340,66 5460,66 5520,38 C5580,10 5700,10 5760,38 L5760,-480 L0,-480 Z"/></svg></div>
    </div>
   </div>
 
@@ -790,7 +790,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 <section>
   <h2>Building an anti-capture environment</h2>
   <p>We're building our own tools, anti-capture down to the fibres. Cryptographic systems that give each builder control of their own experience. Unix-like, composable, mostly harmless.</p>
-  <button class="egg big poised" data-egg="toolbelt" data-burst="r-toolbelt r-prop-cal r-prop-chat r-prop-tx r-prop-search" aria-expanded="false" aria-controls="r-toolbelt r-prop-cal r-prop-chat r-prop-tx r-prop-search" aria-label="Toolbelt">&#129520;</button>
+  <button class="egg big poised" data-egg="toolbelt" data-burst="r-toolbelt r-prop-cal r-prop-chat r-prop-tx r-prop-search r-prop-fission r-prop-fusion" aria-expanded="false" aria-controls="r-toolbelt r-prop-cal r-prop-chat r-prop-tx r-prop-search r-prop-fission r-prop-fusion" aria-label="Toolbelt">&#129520;</button>
   <div class="note" id="r-toolbelt" hidden>
     <p>We say "composable" and "anti-capture" like we've got it all figured out. We don't. Half this toolbelt is duct tape held together by good intentions, but good intentions are the root of good cryptographic properties.</p>
   </div>
@@ -806,6 +806,12 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   <div class="note" id="r-prop-search" data-theme="property" data-mark="&#128270;" hidden>
     <p>An agent that looks things up without accidentally revealing who's searching.</p>
   </div>
+  <div class="note" id="r-prop-fission" data-theme="property" data-mark="&#9986;&#65039;" hidden>
+    <p>A group that can split in two without anyone having to be in the wrong.</p>
+  </div>
+  <div class="note" id="r-prop-fusion" data-theme="property" data-mark="&#129522;" hidden>
+    <p>Groups that form on mutual preference, without anyone finding out who passed on them.</p>
+  </div>
 </section>
 
 <section class="snug">
@@ -817,7 +823,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       <p>Shelves are underrated. A shelf costs nothing to run, holds everything at roughly the height of a person, has no opinion about what goes on it, and never once asks what your plans are.</p>
       <p>Someone here put a box on a shelf to get it out of the way and forgot about it for four years. Then they took down the wrong box, and found the thing they had spent that morning looking for. It had been at eye level the whole time, waiting to be asked.<button class="egg small" data-egg="crinkle" aria-expanded="false" aria-controls="r-crinkle" aria-label="Something off the shelf">&#128099;</button></p>
       <div class="note deep" id="r-crinkle" hidden>
-        <p>One concept puts you in a room with whoever visited the same webpages in the same order. Nobody builds the room and nobody else can find it. The websites that made it possible never find out it happened. It is the crinkliest possible answer to a question nobody asked.<button class="egg small" data-egg="everyroom" aria-expanded="false" aria-controls="r-everyroom" aria-label="Something about who else is there">&#128065;&#65039;</button></p>
+        <p>One cryptography concept puts you in a room with whoever visited the same webpages in the same order. Nobody builds the room and nobody else can find it. The websites that made it possible never find out it happened. It is the crinkliest possible answer to a question nobody asked.<button class="egg small" data-egg="everyroom" aria-expanded="false" aria-controls="r-everyroom" aria-label="Something about who else is there">&#128065;&#65039;</button></p>
         <div class="note deep" id="r-everyroom" hidden>
           <p>Unfortunately, rooms nobody can find are easy enough to find if you are willing to be in all of them at once. A scraper walks every page in every order, arrives everywhere, and waits, which it is very good at.<button class="egg small" data-egg="argon" aria-expanded="false" aria-controls="r-argon" aria-label="Something that costs memory">&#129521;</button></p>
           <div class="note deep" id="r-argon" hidden>
@@ -1227,8 +1233,8 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     if(String(window.getSelection())) return;                       // mid text-selection
     var t = trigger(win);
     if(!t) return;
-    // a fanned follower dismisses only itself; the anchor closes the whole set
-    if(t.dataset.burst !== undefined && win.id !== t.dataset.burst.split(/\s+/)[0]){
+    // anything in a burst dismisses only itself, so the card can be moved aside
+    if(t.dataset.burst !== undefined){
       ebb(win);
       return;
     }
