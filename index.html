@@ -885,7 +885,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     <div class="note deep" id="r-coder" hidden>
       <p>Every crypto community eventually produces someone with a manifesto and a token, quietly convinced they've solved civilization. <button class="egg tiny" data-egg="creed" aria-expanded="false" aria-controls="r-creed" aria-label="Something about the tokens">&#129534;</button></p>
       <div class="note deepest" id="r-creed" hidden>
-        <p>At least our manifestos don't involve tokens. We consider a moral distinction but everyone else considers a technicality.<button class="egg tiny" data-egg="coin" aria-expanded="false" aria-controls="r-coin" aria-label="Something about the room">&#128039;</button></p>
+        <p>At least our manifestos don't involve tokens. We consider it a moral distinction but everyone else considers it a technicality.<button class="egg tiny" data-egg="coin" aria-expanded="false" aria-controls="r-coin" aria-label="Something about the room">&#128039;</button></p>
         <div class="note deepest" id="r-coin" hidden>
           <p>Walk into an Ethereum dev event and you can read the room in about four seconds. Half of them run Arch, or NixOS, or never quite left CCC. Then there's everyone in it for the merch and free money. We are, unfortunately, extremely the first half.</p>
         </div>
@@ -1116,7 +1116,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   }
 
   // everything opens and closes by swelling to its own height
-  function swell(el, origin, btn){
+  function swell(el, origin, btn, quiet){
     el.hidden = false;
     if(btn && FLOATS(el)){
       el.classList.add("floating");
@@ -1132,7 +1132,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       if(!(el.__fan && fanWindow(el, el.__fan.anchor, el.__fan.i, el.__fan.n))){ placeWindow(el, btn); }
       el.__fan = null;
       el.style.touchAction = "none";
-      if(CALM || !el.animate) return;
+      if(quiet || CALM || !el.animate) return;
       if(el.__anim){ el.__anim.cancel(); }
       var fo = el.getBoundingClientRect(), bo = btn.getBoundingClientRect();
       el.style.transformOrigin = (bo.left + bo.width/2 - fo.left) + "px 0px";
@@ -1144,7 +1144,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       fa.onfinish = function(){ el.style.transformOrigin = ""; el.__anim = null; };
       return;
     }
-    if(CALM || !el.animate) return;
+    if(quiet || CALM || !el.animate) return;
     if(el.__anim){ el.__anim.cancel(); }
     var cs = getComputedStyle(el);
     var box = {mt:cs.marginTop, mb:cs.marginBottom, pt:cs.paddingTop, pb:cs.paddingBottom};
@@ -1370,8 +1370,12 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
         var el = document.getElementById(id);
         if(!el || !el.hidden) return;
         el.style.setProperty("--tilt", ((seed(id) - 0.5) * 2.4).toFixed(2) + "deg");
-        if(restoring){ el.hidden = false; return; }
         if(i > 0){ el.__fan = {anchor: anchor, i: i - 1, n: ids.length - 1}; }
+        if(restoring){
+          swell(el, null, btn, true);
+          if(i === ids.length - 1){ anchor.style.zIndex = String(++zTop); }
+          return;
+        }
         setTimeout(function(){
           swell(el, null, btn);
           if(i === ids.length - 1){ anchor.style.zIndex = String(++zTop); }
@@ -1390,8 +1394,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       return;
     }
     panel.style.setProperty("--tilt", ((seed(key) - 0.5) * 2.4).toFixed(2) + "deg");
-    if(restoring){ panel.hidden = false; }
-    else { swell(panel, key === "door" ? btn : null, btn); }
+    swell(panel, (restoring || key !== "door") ? null : btn, btn, restoring);
     btn.setAttribute("aria-expanded","true");
     count(key);
     if(!restoring) jostle(btn);
