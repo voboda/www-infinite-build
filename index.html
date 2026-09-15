@@ -357,51 +357,62 @@ a:hover{text-decoration-color:var(--mark)}
 }
 .threshold-aside{flex:1 1 13rem;max-width:19em;padding-bottom:clamp(.5rem,3vw,1.6rem)}
 .threshold-aside p{margin:0 0 .5rem;color:var(--ink-soft)}
+@media (max-width:640px){
+  .threshold-aside{order:-1}
+}
 .doorway{
-  --door-in:#FAF7EE;
   position:relative;
-  display:flex;
-  align-items:flex-end;
-  justify-content:center;
-  width:min(290px,74vw);
-  aspect-ratio:5/7;
+  display:block;
+  width:min(230px,58vw);
+  aspect-ratio:5/11;
   margin:0;
-  padding:0 1.4rem 2.2rem;
-  border-radius:50% 50% 5px 5px / 40% 40% 4px 4px;
-  background:var(--mark);
-  color:#13212F;
-  border:0;
-  font-family:inherit;
+  padding:0;
+  border:11px solid #3F2716;
+  border-bottom:0;
+  border-radius:3px 3px 0 0;
+  background:#2A1A0E;
   cursor:pointer;
-  text-decoration:none;
+  perspective:900px;
   box-shadow:7px 8px 0 color-mix(in oklab,var(--ink) 22%,transparent);
   transform:rotate(-2.2deg);
   animation:bob 6.4s ease-in-out infinite;
-  overflow:hidden;
-  isolation:isolate;
 }
-.jamb{
-  position:absolute;
-  left:8%;
-  right:8%;
-  bottom:0;
-  top:7%;
-  border-radius:50% 50% 0 0 / 42% 42% 0 0;
-  background:var(--door-in);
-  transform-origin:bottom center;
-  transform:scale(.001);
-  transition:transform 420ms cubic-bezier(.3,1.2,.4,1);
-  z-index:-1;
+.door-light{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 65%,#FFF4CF 0%,#F2C46B 45%,#B37A28 100%);
 }
-.doorway-text{
+.door-leaf{
+  position:absolute;inset:0;
+  transform-origin:left center;
+  transition:transform 460ms cubic-bezier(.3,1.1,.4,1);
+  background:
+    repeating-linear-gradient(90deg,rgba(0,0,0,.08) 0 2px,transparent 2px 9px,rgba(255,255,255,.05) 9px 11px,transparent 11px 23px),
+    linear-gradient(90deg,#8A5A34,#74482A 45%,#8A5A34 70%,#5E3920);
+  box-shadow:inset -3px 0 0 rgba(0,0,0,.25);
+}
+.door-leaf::before,.door-leaf::after{
+  content:"";position:absolute;left:14%;right:14%;
+  border:3px solid rgba(0,0,0,.22);
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.07),inset 3px 4px 8px rgba(0,0,0,.25);
+}
+.door-leaf::before{top:7%;height:33%}
+.door-leaf::after{bottom:6%;height:37%}
+.door-sign{
+  position:absolute;left:10%;right:20%;top:48%;
+  transform:translateY(-50%) rotate(-3deg);
+  background:#F3E6C4;color:#2A1C0E;
   font-family:"Instrument Serif",Georgia,serif;
-  font-size:clamp(1.7rem,5.4vw,2.2rem);
-  line-height:1.05;
-  text-align:center;
-  transition:transform 420ms cubic-bezier(.3,1.2,.4,1);
+  font-size:clamp(1.15rem,4.2vw,1.45rem);line-height:1.05;text-align:center;
+  padding:.45rem .3rem .5rem;border-radius:2px;
+  box-shadow:2px 3px 0 rgba(0,0,0,.3);
 }
-.doorway:hover .jamb,.doorway:focus-visible .jamb{transform:scale(1)}
-.doorway:hover .doorway-text,.doorway:focus-visible .doorway-text{transform:translateY(-6px)}
+.door-knob{
+  position:absolute;right:7%;top:50%;width:15px;height:15px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#F6DC8A,#B58624 60%,#6B4B12);
+  box-shadow:1px 2px 2px rgba(0,0,0,.4);
+}
+.doorway:hover .door-leaf,.doorway:focus-visible .door-leaf{transform:rotateY(-24deg)}
+.doorway[aria-expanded="true"] .door-leaf{transform:rotateY(-68deg)}
 .doorway:active{transform:rotate(-1deg) scale(.97)}
 .doorway:focus-visible{outline:4px solid var(--ink);outline-offset:8px}
 @keyframes bob{
@@ -423,16 +434,8 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 .said .clear{text-decoration:none;margin-left:.15em;font-size:1.15em;line-height:1}
 
 @media (prefers-reduced-motion: reduce){
-  .swell,.swell svg,.egg.big,.pod button,.threshold{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:flex-end;
-  gap:clamp(1.2rem,4vw,2.8rem);
-  margin:2.8rem 0 0 clamp(0px,4vw,3rem);
-}
-.threshold-aside{flex:1 1 13rem;max-width:19em;padding-bottom:clamp(.5rem,3vw,1.6rem)}
-.threshold-aside p{margin:0 0 .5rem;color:var(--ink-soft)}
-.doorway{animation:none !important}
+  .swell,.swell svg,.egg.big,.pod button,.doorway{animation:none !important}
+  .door-leaf{transition:none}
   .note{animation:none}
   .egg::after{display:none}
   section{transition:none}
@@ -457,12 +460,6 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   border-radius:48% 48% 10px 10px / 15% 15% 6px 6px;
   padding:clamp(3.4rem,10vw,5rem) clamp(1.5rem,5vw,2.4rem) clamp(1.8rem,4vw,2.4rem);
   box-shadow:9px 11px 0 color-mix(in oklab,var(--ink) 16%,transparent);
-  animation:swing .68s cubic-bezier(.2,.9,.3,1);
-  transform-origin:left center;
-}
-@keyframes swing{
-  from{opacity:0;transform:perspective(1100px) rotateY(-72deg)}
-  to{opacity:1;transform:perspective(1100px) rotateY(0)}
 }
 .door-panel p{margin:0 0 1rem;max-width:none}
 .door-panel p:last-child{margin-bottom:0}
@@ -562,6 +559,16 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 
 /* ---------- every window dressed for its own emoji ---------- */
 .floating.floating[data-theme]{border-top-width:0}
+/* a window carries its own palette, so anything inside that mixes from the tokens mixes from the window */
+.floating.floating[data-theme]{
+  --paper:#DCE2D6;--note:#FAF7EE;--ink:#13212F;--ink-soft:#4A5A63;
+  --sea-a:#2B5F6E;--sea-b:#3E8794;--sea-c:#8FC0B7;--mark:#C08A2E;
+  color:var(--ink);
+}
+.floating.floating:is([data-theme="coder"],[data-theme="dolphin"],[data-theme="euler"],[data-theme="everyroom"],[data-theme="chia"],[data-theme="snake"],[data-theme="earth"]){
+  --paper:#0D1820;--note:#17252E;--ink:#D9E4DC;--ink-soft:#8CA0A4;
+  --sea-a:#12333D;--sea-b:#1D4F5B;--sea-c:#2E6E71;--mark:#D6A64A;
+}
 
 /* ♾️ the chatroom that never closes */
 .floating.floating[data-theme="always"]{
@@ -928,8 +935,12 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   <p>No application. No evaluators. Four questions from the heart.</p>
   <div class="threshold">
     <button class="doorway" type="button" data-egg="door" aria-expanded="false" aria-controls="r-door">
-      <span class="jamb" aria-hidden="true"></span>
-      <span class="doorway-text">Step through<br>and say hello</span>
+      <span class="door-light" aria-hidden="true"></span>
+      <span class="door-leaf" aria-hidden="true">
+        <span class="door-sign">Step through<br>and say hello</span>
+        <span class="door-knob"></span>
+      </span>
+      <span class="sr">Step through and say hello</span>
     </button>
     <div class="threshold-aside">
       <p>This isn't a test. It's an invitation to learn something with us.</p>
@@ -1095,10 +1106,11 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     if(opened.indexOf(el) === -1){ opened.push(el); }
   }
 
+  var FAN_MIN = 760; // below this a burst stacks instead of fanning out
   // a burst fans its followers around the window they belong to. offsets, not
   // rects: the anchor may still be animating and its rect would be scaled.
   function fanWindow(el, anchor, i, n){
-    if(window.innerWidth < 760){ return false; }
+    if(window.innerWidth < FAN_MIN){ return false; }
     var w = el.offsetWidth, h = el.offsetHeight;
     var cx = anchor.offsetLeft + anchor.offsetWidth / 2;
     var cy = anchor.offsetTop + anchor.offsetHeight / 2;
@@ -1117,6 +1129,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   // everything opens and closes by swelling to its own height
   function swell(el, origin, btn, quiet){
     el.hidden = false;
+    el.__leaving = false;
     if(btn && FLOATS(el)){
       el.classList.add("floating");
       if(!el.__home){
@@ -1161,6 +1174,29 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     var a = el.animate([from, to], {duration: origin ? 700 : 480, easing: IN});
     el.__anim = a;
     a.onfinish = function(){ el.style.overflow = ""; el.style.transformOrigin = ""; el.__anim = null; };
+  }
+
+  // the door: bring it up the screen if what's behind it would open out of sight,
+  // then let the page come out of the doorway itself
+  function openDoor(btn, panel){
+    panel.hidden = false;
+    var r = btn.getBoundingClientRect();
+    if(r.bottom > window.innerHeight * 0.55){
+      window.scrollBy({top: r.top - window.innerHeight * 0.1, behavior: CALM ? "auto" : "smooth"});
+    }
+    if(CALM || !panel.animate) return;
+    var inside = panel.querySelector(".door-panel");
+    var t = inside.getBoundingClientRect();
+    var left = Math.max(0, r.left - t.left);
+    var right = Math.max(0, t.right - r.right);
+    var bottom = Math.max(0, t.height - r.height);
+    if(inside.__anim){ inside.__anim.cancel(); }
+    inside.__anim = inside.animate([
+      {transform:"translateY(" + (r.top - t.top) + "px)",
+       clipPath:"inset(0 " + right + "px " + bottom + "px " + left + "px round 3px)", opacity:.35},
+      {transform:"none", clipPath:"inset(0 0 0 0 round 10px)", opacity:1}
+    ], {duration:720, delay:160, easing:IN, fill:"backwards"});
+    inside.__anim.onfinish = function(){ inside.__anim = null; };
   }
 
   function goHome(el){
@@ -1223,22 +1259,45 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     if(haul){ haul.win.classList.remove("hauling"); haul = null; }
   });
 
-  // 3. click the window itself to put it away
   var dragged = null;
-  document.addEventListener("click", function(e){
-    if(dragged) return;
-    var win = e.target.closest && e.target.closest(".floating");
-    if(!win || win.hidden) return;
-    if(e.target.closest("a, button")) return;                       // links and nested eggs still work
-    if(String(window.getSelection())) return;                       // mid text-selection
-    var t = trigger(win);
-    if(!t) return;
-    // anything in a burst dismisses only itself, so the card can be moved aside
+  // a click on nothing puts away the window on top of what you can see, and what it opened.
+  // a fanned burst leaves together; a stacked one is dealt off one card at a time.
+  // windows out of sight stay put.
+  function inView(el){
+    var r = el.getBoundingClientRect();
+    var seen = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+    return seen > Math.min(r.height, window.innerHeight) * 0.4;
+  }
+  function putAwayTop(){
+    var top = null;
+    opened.forEach(function(w){
+      if(w.hidden || w.__leaving || !inView(w)) return;
+      if(!top || (+w.style.zIndex || 0) > (+top.style.zIndex || 0)){ top = w; }
+    });
+    if(!top) return;
+    var t = trigger(top);
+    if(!t){ ebb(top); return; }
     if(t.dataset.burst !== undefined){
-      ebb(win);
+      var ids = t.dataset.burst.split(/\s+/);
+      var anchor = document.getElementById(ids[0]);
+      var rest = ids.filter(function(id){
+        var el = document.getElementById(id);
+        return el && el !== top && !el.hidden && !el.__leaving;
+      });
+      if(window.innerWidth < FAN_MIN && rest.length){ ebb(top); return; }
+      shut(t, anchor.hidden ? top : anchor);
       return;
     }
-    shut(t, win);
+    shut(t, top);
+  }
+  document.addEventListener("click", function(e){
+    if(dragged) return;
+    if(e.target.closest && e.target.closest(".floating, a, button, input, textarea, [data-egg]")) return;
+    if(String(window.getSelection())) return;
+    putAwayTop();
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){ putAwayTop(); }
   });
 
   document.addEventListener("pointerdown", function(e){
@@ -1248,6 +1307,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 
   function ebb(el, done){
     if(el.classList.contains("floating")){
+      el.__leaving = true;
       shutChildren(el);
       if(CALM || !el.animate){ el.hidden = true; goHome(el); if(done) done(); return; }
       if(el.__anim){ el.__anim.cancel(); }
@@ -1393,7 +1453,8 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       return;
     }
     panel.style.setProperty("--tilt", ((seed(key) - 0.5) * 2.4).toFixed(2) + "deg");
-    swell(panel, (restoring || key !== "door") ? null : btn, btn, restoring);
+    if(key === "door" && !restoring){ openDoor(btn, panel); }
+    else { swell(panel, null, btn, restoring); }
     btn.setAttribute("aria-expanded","true");
     count(key);
     if(!restoring) jostle(btn);
