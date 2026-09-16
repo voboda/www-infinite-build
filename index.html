@@ -770,6 +770,39 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 .floating.floating[data-theme="tabs"]{background:#E8F1F3}
 .floating.floating[data-theme="tinker"]{background:#F3EDE2}
 .floating.floating[data-theme="fraud"]{background:#EDE9F3}
+/* a reveal that is just words with a dotted line under them */
+.egg.word{
+  font-size:inherit;vertical-align:baseline;margin:0;
+  cursor:pointer;touch-action:auto;animation:none;
+  text-decoration:underline dotted;text-decoration-color:var(--sea-b);
+  text-decoration-thickness:1.5px;text-underline-offset:.22em;
+}
+.egg.word.grown{font-size:inherit}
+.egg.word::after{display:none}
+.egg.word:hover{text-decoration-color:var(--mark)}
+/* 🗝️ the lock that came off */
+.floating.floating[data-theme="ban"]{
+  background:#F3EBD6;color:#2E2414;
+  border:2px solid #9C7A36;border-radius:10px 10px 46% 46% / 10px 10px 14% 14%;
+}
+/* 🕸️ a herbarium plate */
+.floating.floating[data-theme="net"]{
+  background:
+    linear-gradient(118deg,transparent 49.6%,#C9C3A6 49.8% 50.2%,transparent 50.4%),
+    linear-gradient(62deg,transparent 49.6%,#C9C3A6 49.8% 50.2%,transparent 50.4%),#F6F2E2;
+  color:#2B3120;border:1px solid #9AA27E;border-radius:2px;
+  font-family:"Instrument Serif",Georgia,serif;font-size:1.08em;
+}
+/* 🌱 a seed packet */
+.floating.floating[data-theme="resource"]{
+  background:#E9F0D8;color:#27351A;
+  border:1px solid #7D9A55;border-top:16px solid #7D9A55;border-radius:2px 2px 8px 8px;
+}
+/* 🪁 the ball */
+.floating.floating[data-theme="drift"]{
+  background:linear-gradient(160deg,#F7D9E6,#E8D2F2 55%,#F6E7C4);color:#3A1F33;
+  border:2px solid #B9679A;border-radius:18px;
+}
 </style>
 </head>
 <body>
@@ -797,7 +830,13 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 
 <section>
   <h2>Building anti-capture environments</h2>
-  <p>We're building our own tools, anti-capture down to the fibres. Cryptographic systems that give each builder control of their own experience. Unix-like, composable, mostly harmless.</p>
+  <p>We're building our own tools, anti-capture down to the fibres. Cryptographic systems that give each builder control of their own experience. Unix-like, composable, <button class="egg word" data-egg="substrate" data-series aria-expanded="false" aria-controls="r-substrate" aria-label="mostly harmless, and something about who decides">mostly harmless</button>.</p>
+  <div class="note deep" id="r-substrate" hidden>
+    <p class="step" hidden>Somebody spent fifteen years researching the first of those two words.</p>
+    <p class="step" hidden>The rest of what they wrote is in a drawer, in the desk of whoever decides what gets printed.</p>
+    <p class="step" hidden>Blockchain people see a desk like that and write a protocol, so there is no desk.</p>
+    <p class="step" hidden>Then the protocol needs changing, and somebody has to sit at a desk to change it.</p>
+  </div>
   <button class="egg big poised" data-egg="toolbelt" data-burst="r-toolbelt r-prop-cal r-prop-chat r-prop-tx r-prop-search r-prop-fission r-prop-fusion" aria-expanded="false" aria-controls="r-toolbelt r-prop-cal r-prop-chat r-prop-tx r-prop-search r-prop-fission r-prop-fusion" aria-label="Toolbelt">&#129520;</button>
   <div class="note" id="r-toolbelt" hidden>
     <p>We say "composable" and "anti-capture" like we've got it all figured out. We don't. Most of this toolkit is duct tape held together by good intentions, but good intentions are the root of good cryptographic properties.</p>
@@ -861,18 +900,24 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
       <p>Most of what we build here is a wheel someone else already invented. We build it again anyway, partly so nobody else can repossess it, and partly because reading someone else's code is worse than writing your own, badly.</p>
     </div>
     <div class="note deep" id="r-money" hidden>
-      <p>No investors, answering to each other instead, which is principled except when your friends aren't free on a Tuesday to be answered to.</p>
+      <p>No investors, answering to each other instead, which is principled except when your friends aren't free on a Tuesday to be answered to.<button class="egg small" data-egg="resource" aria-expanded="false" aria-controls="r-resource" aria-label="Something about products">&#127793;</button></p>
+      <div class="note deep" id="r-resource" hidden>
+        <p>Some friends asked whether you could run a company with no products. We've nearly managed it, except that we also have no company. Everything here ships as a resource, which is what a product is called when people want to use it but nobody wants to sell it.</p>
+      </div>
     </div>
     <p>Dolphins built none of it. They just swim around and occasionally mess with puffer fish and lost sailors.</p>
     <p>Either they never worked out capitalism, or they worked it out first.<button class="egg small" data-egg="hash" aria-expanded="false" aria-controls="r-hash" aria-label="Something about guessing">&#129518;</button></p>
     <div class="note deep" id="r-hash" hidden>
       <p>Guessing what we're building next is basically brute-forcing a hash: technically possible and comically slow.</p>
-      <p>You can explain hash functions to a beginner using only long division. You can then use the Monster Group to explain that mathematics is the language of the universe. Nobody here will think you've been playing with puffer fish.<button class="egg tiny" data-egg="euler" aria-expanded="false" aria-controls="r-euler" aria-label="Something about fairness">&#128208;</button><button class="egg tiny" data-egg="poets" aria-expanded="false" aria-controls="r-poets" aria-label="Something about cryptographers">&#128395;&#65039;</button></p>
+      <p>You can explain hash functions to a beginner using only long division. You can then use the Monster Group to explain that mathematics is the language of the universe. Nobody here will think you've been playing with puffer fish.<button class="egg tiny" data-egg="euler" aria-expanded="false" aria-controls="r-euler" aria-label="Something about fairness">&#128208;</button><button class="egg tiny" data-egg="poets" aria-expanded="false" aria-controls="r-poets" aria-label="Something about cryptographers">&#128395;&#65039;</button><button class="egg tiny" data-egg="net" aria-expanded="false" aria-controls="r-net" aria-label="Something about plants">&#128376;&#65039;</button></p>
       <div class="note deepest" id="r-euler" hidden>
         <p>You might think that Truth, Value, Fairness and Debt are unrelated. But they can all be explained with Euler's identity, e<sup>i&#960;</sup> + 1 = 0, if you squint hard enough.</p>
       </div>
       <div class="note deepest" id="r-poets" hidden>
         <p>The library is open. Cryptographers are poets, infinite players redrawing the boundaries of conflict, communication and secrecy. Someone in this group wrote that sentence sincerely. We know who. We're not saying.</p>
+      </div>
+      <div class="note deepest" id="r-net" hidden>
+        <p>In 1751 Linnaeus set out to arrange every plant on a ladder, one to a rung, from simplest to most perfect. He put the grasses on a rung, and the rushes turned up beside them, which is not something a ladder allows. He moved the rushes up a rung, and the lilies turned up beside those. He moved the lilies, and the orchids turned up beside the lilies. Eventually he gave up and mumbled something about laws of nature.</p>
       </div>
     </div>
   </div>
@@ -886,7 +931,11 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   <div class="note deep" id="r-always" hidden>
     <p>For some reason it's also there when you don't.<button class="egg tiny" data-egg="muted" aria-expanded="false" aria-controls="r-muted" aria-label="Something about notifications">&#128277;</button><button class="egg small" data-egg="coder" aria-expanded="false" aria-controls="r-coder" aria-label="Something about the people here. Keep pressing.">&#129489;&#8205;&#128187;</button><button class="egg tiny" data-egg="ddd" aria-expanded="false" aria-controls="r-ddd" aria-label="Something about process">&#128203;</button></p>
     <div class="note deepest" id="r-muted" hidden>
-      <p>Some of us have it muted, and a stubborn remainder are still in the old Telegram chat they weren't checking when we started the Matrix one.</p>
+      <p>Some of us have it muted, and a stubborn remainder are still in the old Telegram chat they weren't checking when we started the Matrix one.<button class="egg tiny" data-egg="drift" aria-expanded="false" aria-controls="r-drift" aria-label="Something about leaving">&#129665;</button></p>
+      <div class="note deepest" id="r-drift" hidden>
+        <p>Moloch DAOs have a button called ragequit. Press it if you think everyone is wrong, and walk out with your share. No permission is needed.</p>
+        <p>Usually nobody is wrong, it's just that some people want to perfect the death drop and some people have become very interested in the wigs. So we're making a version that skips the three weeks of shade, and goes straight to founding a new house. Everyone still comes to the ball.</p>
+      </div>
     </div>
     <div class="note deep" id="r-coder" hidden>
       <p>Every crypto community eventually produces someone with a manifesto and a token, quietly convinced they've solved civilization. <button class="egg tiny" data-egg="creed" aria-expanded="false" aria-controls="r-creed" aria-label="Something about the tokens">&#129534;</button></p>
@@ -950,7 +999,10 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 
   <div class="doorframe" id="r-door" hidden>
     <div class="door-panel">
-      <p>Why do these things have application forms? Applying to meet people you're about to be friends with is a strange thing to do. We're strange, but not that strange.</p>
+      <p>Why do these things have <button class="egg word" data-egg="ban" aria-expanded="false" aria-controls="r-ban" aria-label="application forms, and something about the ban">application forms</button>? Applying to meet people you're about to be friends with is a strange thing to do. We're strange, but not that strange.</p>
+      <div class="note" id="r-ban" hidden>
+        <p>An application form is a very small door with a complicated lock on it. We took off the lock, because people are complicated enough.</p>
+      </div>
       <p>Think of the answer to these questions:</p>
       <ul class="asks">
         <li>What do you keep opening tabs about?<button class="egg small" data-egg="tabs" aria-expanded="false" aria-controls="r-tabs" aria-label="See how others answered">&#128172;</button>
