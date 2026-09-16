@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Infinite Build</title>
+<script>
+/* a chosen theme lands before first paint; no choice means the system decides */
+try{ var t = localStorage.getItem("ib-theme"); if(t === "dark" || t === "light"){ document.documentElement.setAttribute("data-theme", t); } }catch(e){}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Space+Grotesk:wght@400;500&amp;display=swap" rel="stylesheet">
@@ -73,6 +77,24 @@ p{max-width:36em}
 
 /* ---------- the sea ---------- */
 header{position:relative;padding-top:0;margin-bottom:14vh}
+/* the sun: press it and it sets */
+.sun{
+  appearance:none;background:none;border:0;padding:0;margin:0;cursor:grab;
+  position:absolute;right:0;top:clamp(70px,14vw,140px);z-index:2;
+  touch-action:none;user-select:none;-webkit-user-select:none;
+  --sx:0px;--sy:0px;
+  transform:translate(var(--sx),var(--sy));
+  font-size:clamp(3.6rem,13vw,7.5rem);line-height:1;
+  filter:drop-shadow(0 0 18px rgba(255,200,90,.55));
+  transition:transform .9s cubic-bezier(.3,1.2,.4,1),filter .9s ease;
+}
+.sun:hover{transform:translate(var(--sx),var(--sy)) rotate(18deg) scale(1.05)}
+.sun:focus-visible{outline:3px solid var(--mark);outline-offset:6px;border-radius:50%}
+.sun.set{transform:translate(var(--sx),var(--sy)) translateY(38%) rotate(-12deg) scale(.86);filter:grayscale(.55) brightness(.62) drop-shadow(0 0 10px rgba(255,170,70,.25))}
+.sun.set:hover{transform:translate(var(--sx),var(--sy)) translateY(30%) rotate(-4deg) scale(.9)}
+.sun.dragging,.sun.dragging:hover{cursor:grabbing;transition:filter .9s ease;transform:translate(var(--sx),var(--sy)) rotate(var(--sr,0deg)) scale(1.08)}
+.sun.set.dragging{transform:translate(var(--sx),var(--sy)) translateY(38%) rotate(var(--sr,0deg)) scale(.9)}
+@media (prefers-reduced-motion: reduce){ .sun{transition:none} }
 .sea{
   position:fixed;
   top:0;
@@ -868,6 +890,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
    </div>
   </div>
 
+  <button type="button" class="sun" id="sun" aria-label="Dark mode" aria-pressed="false">&#9728;&#65039;</button>
   <h1>The<br>Infinite<em>Build</em></h1>
 
   <p class="standfirst">
@@ -1705,6 +1728,74 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     window.addEventListener("scroll", onScroll, {passive: true});
   }
 
+  // the sun follows the system until someone presses it
+  var sun = document.getElementById("sun");
+  var sky = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function isDark(){
+    var t = root.getAttribute("data-theme");
+    if(t === "dark") return true;
+    if(t === "light") return false;
+    return !!(sky && sky.matches);
+  }
+  function showSun(){
+    if(!sun) return;
+    var d = isDark();
+    sun.classList.toggle("set", d);
+    sun.setAttribute("aria-pressed", d ? "true" : "false");
+  }
+  if(sun){
+    // the sun can be carried anywhere; a press that moved is a carry, not a toggle
+    var carry = null, carried = false;
+    try{
+      var sp = JSON.parse(localStorage.getItem("ib-sun") || "null");
+      if(sp && isFinite(sp[0]) && isFinite(sp[1])){
+        sun.style.setProperty("--sx", sp[0] + "px");
+        sun.style.setProperty("--sy", sp[1] + "px");
+      }
+    }catch(e){}
+    sun.addEventListener("pointerdown", function(e){
+      var sx = parseFloat(sun.style.getPropertyValue("--sx")) || 0;
+      var sy = parseFloat(sun.style.getPropertyValue("--sy")) || 0;
+      carry = {x:e.clientX, y:e.clientY, ox:sx, oy:sy, moved:false};
+      carried = false;
+      try{ sun.setPointerCapture(e.pointerId); }catch(err){}
+    });
+    sun.addEventListener("pointermove", function(e){
+      if(!carry) return;
+      var dx = e.clientX - carry.x, dy = e.clientY - carry.y;
+      if(!carry.moved && Math.abs(dx) + Math.abs(dy) < 9) return;
+      carry.moved = true;
+      sun.classList.add("dragging");
+      sun.style.setProperty("--sx", Math.round(carry.ox + dx) + "px");
+      sun.style.setProperty("--sy", Math.round(carry.oy + dy) + "px");
+      sun.style.setProperty("--sr", Math.max(-30, Math.min(30, dx * 0.12)).toFixed(1) + "deg");
+    });
+    function putDown(){
+      if(!carry) return;
+      if(carry.moved){
+        carried = true;
+        sun.classList.remove("dragging");
+        sun.style.removeProperty("--sr");
+        try{ localStorage.setItem("ib-sun", JSON.stringify([parseFloat(sun.style.getPropertyValue("--sx")) || 0, parseFloat(sun.style.getPropertyValue("--sy")) || 0])); }catch(err){}
+      }
+      carry = null;
+    }
+    sun.addEventListener("pointerup", putDown);
+    sun.addEventListener("pointercancel", putDown);
+    sun.addEventListener("click", function(e){
+      if(carried){ carried = false; e.preventDefault(); return; }
+      var next = isDark() ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try{ localStorage.setItem("ib-theme", next); }catch(e){}
+      showSun();
+    });
+    if(sky){
+      if(sky.addEventListener){ sky.addEventListener("change", showSun); }
+      else if(sky.addListener){ sky.addListener(showSun); }
+    }
+    showSun();
+  }
+
   var clear = document.getElementById("clear-all");
   if(clear){
     clear.addEventListener("click", function(){
@@ -1721,7 +1812,10 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
         el.style.removeProperty("--rot");
       });
       state = {found:[], series:{}, shell:0, pos:{}};
-      try{ localStorage.removeItem(KEY); }catch(e){}
+      try{ localStorage.removeItem(KEY); localStorage.removeItem("ib-theme"); localStorage.removeItem("ib-sun"); }catch(e){}
+      if(sun){ sun.style.removeProperty("--sx"); sun.style.removeProperty("--sy"); }
+      root.removeAttribute("data-theme");
+      showSun();
       messify();
       renderPod();
       var line = document.getElementById("clear-line");
