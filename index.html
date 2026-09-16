@@ -17,6 +17,8 @@
   --sea-b:#3E8794;
   --sea-c:#8FC0B7;
   --mark:#C08A2E;
+  --glow-hot:#F7DFA2;
+  --glow-warm:#F6EBCB;
   --mess:0;
   --chop:0;
   --amp:6;
@@ -31,6 +33,8 @@
     --sea-b:#1D4F5B;
     --sea-c:#2E6E71;
     --mark:#D6A64A;
+    --glow-hot:#4A3514;
+    --glow-warm:#2A2A22;
   }
 }
 :root[data-theme="dark"]{
@@ -42,6 +46,8 @@
   --sea-b:#1D4F5B;
   --sea-c:#2E6E71;
   --mark:#D6A64A;
+  --glow-hot:#4A3514;
+  --glow-warm:#2A2A22;
 }
 
 *{box-sizing:border-box}
@@ -355,7 +361,7 @@ a:hover{text-decoration-color:var(--mark)}
   gap:clamp(1.2rem,4vw,2.8rem);
   margin:2.8rem 0 0 clamp(0px,4vw,3rem);
 }
-.threshold-aside{flex:1 1 13rem;max-width:19em;padding-bottom:clamp(.5rem,3vw,1.6rem)}
+.threshold-aside{flex:1 1 13rem;max-width:19em;padding-bottom:clamp(.5rem,3vw,1.6rem);position:relative;z-index:1}
 .threshold-aside p{margin:0 0 .5rem;color:var(--ink-soft)}
 @media (max-width:640px){
   .threshold-aside{order:-1}
@@ -380,6 +386,43 @@ a:hover{text-decoration-color:var(--mark)}
 .door-light{
   position:absolute;inset:0;
   background:radial-gradient(ellipse at 30% 65%,#FFF4CF 0%,#F2C46B 45%,#B37A28 100%);
+  transition:filter .6s ease;
+}
+/* whatever is in there, it glows: a halo round the frame, and a wedge of light across the floor */
+.doorway::before,.doorway::after{content:"";position:absolute;pointer-events:none}
+.doorway::before{
+  inset:-24% -80% -12% -80%;
+  z-index:-1;
+  background:
+    repeating-conic-gradient(from 180deg at 50% 58%,rgba(255,232,168,.22) 0deg 3deg,transparent 3deg 11deg),
+    radial-gradient(ellipse at 50% 58%,rgba(255,238,180,.95) 0%,rgba(242,196,107,.55) 26%,rgba(242,196,107,.12) 52%,transparent 70%);
+  -webkit-mask:radial-gradient(ellipse at 50% 58%,#000 20%,transparent 70%);
+  mask:radial-gradient(ellipse at 50% 58%,#000 20%,transparent 70%);
+  filter:blur(3px);
+  opacity:.18;
+  transform:scale(.8);
+  transition:opacity .7s ease,transform .9s cubic-bezier(.2,1,.3,1);
+}
+.doorway::after{
+  top:100%;left:-11px;right:-11px;
+  height:clamp(160px,48vw,300px);
+  background:linear-gradient(to bottom,rgba(255,236,170,.9),rgba(242,196,107,.45) 35%,rgba(242,196,107,.12) 70%,transparent);
+  clip-path:polygon(0 0,100% 0,190% 100%,-90% 100%);
+  filter:blur(2px);
+  opacity:0;
+  transform-origin:top center;
+  transform:scaleY(.2);
+  transition:opacity .6s ease,transform .8s cubic-bezier(.2,1,.3,1);
+}
+.doorway:hover::before,.doorway:focus-visible::before{opacity:.5;transform:scale(.92)}
+.doorway:hover::after,.doorway:focus-visible::after{opacity:.35;transform:scaleY(.45)}
+.doorway[aria-expanded="true"]::before{opacity:1;transform:scale(1.08);animation:hum 3.1s ease-in-out infinite}
+.doorway[aria-expanded="true"]::after{opacity:1;transform:scaleY(1)}
+.doorway[aria-expanded="true"] .door-light{filter:brightness(1.35) saturate(1.15)}
+@keyframes hum{
+  0%,100%{filter:blur(3px) brightness(1)}
+  47%{filter:blur(4px) brightness(1.18)}
+  63%{filter:blur(3px) brightness(.94)}
 }
 .door-leaf{
   position:absolute;inset:0;
@@ -411,8 +454,8 @@ a:hover{text-decoration-color:var(--mark)}
   background:radial-gradient(circle at 35% 35%,#F6DC8A,#B58624 60%,#6B4B12);
   box-shadow:1px 2px 2px rgba(0,0,0,.4);
 }
-.doorway:hover .door-leaf,.doorway:focus-visible .door-leaf{transform:rotateY(-24deg)}
-.doorway[aria-expanded="true"] .door-leaf{transform:rotateY(-68deg)}
+.doorway:hover .door-leaf,.doorway:focus-visible .door-leaf{transform:rotateY(24deg)}
+.doorway[aria-expanded="true"] .door-leaf{transform:rotateY(68deg)}
 .doorway:active{transform:rotate(-1deg) scale(.97)}
 .doorway:focus-visible{outline:4px solid var(--ink);outline-offset:8px}
 @keyframes bob{
@@ -436,6 +479,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 @media (prefers-reduced-motion: reduce){
   .swell,.swell svg,.egg.big,.pod button,.doorway{animation:none !important}
   .door-leaf{transition:none}
+  .doorway::before,.doorway::after,.door-light{transition:none;animation:none !important}
   .note{animation:none}
   .egg::after{display:none}
   section{transition:none}
@@ -453,13 +497,20 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
   justify-content:center;
   align-items:start;
   grid-template-columns:minmax(0,38rem);
+  position:relative;
+  z-index:1;
 }
 .door-panel{
-  background:var(--note);
-  border:3px solid var(--mark);
-  border-radius:48% 48% 10px 10px / 15% 15% 6px 6px;
-  padding:clamp(3.4rem,10vw,5rem) clamp(1.5rem,5vw,2.4rem) clamp(1.8rem,4vw,2.4rem);
-  box-shadow:9px 11px 0 color-mix(in oklab,var(--ink) 16%,transparent);
+  background:
+    radial-gradient(ellipse 120% 70% at 30% 0%,var(--glow-hot) 0%,var(--glow-warm) 45%,transparent 80%),
+    var(--note);
+  border:11px solid #3F2716;
+  border-bottom:0;
+  border-radius:3px 3px 0 0;
+  padding:clamp(2rem,6vw,2.8rem) clamp(1.5rem,5vw,2.4rem) clamp(1.8rem,4vw,2.4rem);
+  box-shadow:
+    inset 0 40px 70px -40px rgba(242,196,107,.45),
+    9px 11px 0 color-mix(in oklab,var(--ink) 16%,transparent);
 }
 .door-panel p{margin:0 0 1rem;max-width:none}
 .door-panel p:last-child{margin-bottom:0}
@@ -933,7 +984,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     <div class="note deepest" id="r-muted" hidden>
       <p>Some of us have it muted, and a stubborn remainder are still in the old Telegram chat they weren't checking when we started the Matrix one.<button class="egg tiny" data-egg="drift" aria-expanded="false" aria-controls="r-drift" aria-label="Something about leaving">&#129665;</button></p>
       <div class="note deepest" id="r-drift" hidden>
-        <p>Moloch DAOs have a button called ragequit. Press it if you think everyone is wrong, and walk out with your share. No permission is needed.</p>
+        <p>Moloch DAOs have a button called ragequit. Press it if you think everyone is wrong, and walk out with your share.</p>
         <p>Usually nobody is wrong, it's just that some people want to perfect the death drop and some people have become very interested in the wigs. So we're making a version that skips the three weeks of shade, and goes straight to founding a new house. Everyone still comes to the ball.</p>
       </div>
     </div>
@@ -999,7 +1050,7 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
 
   <div class="doorframe" id="r-door" hidden>
     <div class="door-panel">
-      <p>Why do these things have <button class="egg word" data-egg="ban" aria-expanded="false" aria-controls="r-ban" aria-label="application forms, and something about the ban">application forms</button>? Applying to meet people you're about to be friends with is a strange thing to do. We're strange, but not that strange.</p>
+      <p>Why do these things have <button class="egg word" data-egg="ban" aria-expanded="false" aria-controls="r-ban" aria-label="application forms, and something about the ban">application forms</button>? Applying to meet people you're about to be friends with is a strange thing to do.</p>
       <div class="note" id="r-ban" hidden>
         <p>An application form is a very small door with a complicated lock on it. We took off the lock, because people are complicated enough.</p>
       </div>
@@ -1245,8 +1296,8 @@ footer{font-size:.9em;color:var(--ink-soft);margin-top:3rem}
     if(inside.__anim){ inside.__anim.cancel(); }
     inside.__anim = inside.animate([
       {transform:"translateY(" + (r.top - t.top) + "px)",
-       clipPath:"inset(0 " + right + "px " + bottom + "px " + left + "px round 3px)", opacity:.35},
-      {transform:"none", clipPath:"inset(0 0 0 0 round 10px)", opacity:1}
+       clipPath:"inset(0 " + right + "px " + bottom + "px " + left + "px round 3px 3px 0 0)", opacity:.35},
+      {transform:"none", clipPath:"inset(0 0 0 0 round 3px 3px 0 0)", opacity:1}
     ], {duration:720, delay:160, easing:IN, fill:"backwards"});
     inside.__anim.onfinish = function(){ inside.__anim = null; };
   }
